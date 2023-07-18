@@ -8,3 +8,19 @@ components:
         - DEFAULT_FLOWER_COMMISSION_IN_PERCENT # 신규 퍼블리셔의 플라워 운영 수수료율 기본값 (%)
         - DEFAULT_PLATFORM_COMMISSION_IN_PERCENT # 신규 플랫폼사의 플랫폼 수수료율 기본값 (%)
         - ADVERTISER_EXECUTION_PERFORMANCE_BASE_DAY # 광고주 집행 실적 확인 기준일
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
