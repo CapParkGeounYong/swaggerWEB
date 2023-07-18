@@ -1,0 +1,84 @@
+components:
+  schemas:
+    CampaignReviewPageResponse:
+      type: object
+      properties:
+        reviewIds:
+          type: string
+          description: '"|" separated reviewIds'
+        submitType:
+          type: string
+          default: NEW
+          enum:
+            - ADD
+            - CHANGE
+            - NEW
+        createdAt:
+          type: string
+          format: date-time
+          example: '제출 일'
+        ownerId:
+          type: integer
+          format: int64
+          example: 1
+        ownerName:
+          type: string
+          nullable: false
+          example: 'sample owner'
+        createdById:
+          type: integer
+          format: int64
+        createdByAccount:
+          type: string
+          nullable: false
+          example: 'sample member account'
+        createdByName:
+          type: string
+          nullable: false
+          example: 'sample member name'
+        campaignId:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        additionalAdId:
+          type: integer
+          format: int64
+        changedAdId:
+          type: integer
+          format: int64
+        beforeAdVersionId:
+          type: integer
+          format: int64
+        afterAdVersionId:
+          type: integer
+          format: int64
+    AdReviewHistoryListDto:
+      allOf:
+        - $ref: '../product-review/schemas.yaml#/components/schemas/ProductReviewHistoryListDto'
+        - type: object
+          properties:
+            adId:
+              type: integer
+              format: int64
+              description: 광고 id
+            adVersionId:
+              type: integer
+              format: int64
+              description: 광고 버젼 id
+            adName:
+              type: string
+              description: 광고 이름
+    CampaignReviewDecision:
+      type: object
+      properties:
+        ids:
+          type: string
+          nullable: false
+          default: ''
+          description: '"|" separated reviewIds'
+        decision:
+          $ref: "../common/schemas.yaml#/components/schemas/ReviewDecisionType"
+        comment:
+          type: string
+

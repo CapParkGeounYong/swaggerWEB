@@ -1,0 +1,22 @@
+base:
+  properties:
+    id:
+      type: integer
+      nullable: false
+      maxLength: 255
+      format: int64
+      example: 1
+    creator:
+      type: integer
+      format: int64
+      example: 1
+baseTest:
+  properties:
+    id1:
+      type: integer
+      format: int64
+      example: 1
+    creator1:
+      type: integer
+      format: int64
+      example: 1

@@ -1,0 +1,11 @@
+components:
+  schemas:
+    VolatilePathAndSecretKey:
+      type: object
+      properties:
+        path:
+          type: string
+          nullable: false
+        secretKey:
+          type: string
+          nullable: false

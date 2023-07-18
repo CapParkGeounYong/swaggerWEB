@@ -1,0 +1,75 @@
+components:
+  parameters:
+    campaignId:
+      name: campaignId
+      in: path
+      description: campaignId
+      schema:
+        type: integer
+        format: int64
+        example: 1
+    adIds:
+      name: adIds
+      in: query
+      description: One or more adIds. separator is '|'.
+      required: false
+      schema:
+        type: string
+        example: 1|2|3
+    startDate:
+      name: startDate
+      in: query
+      description: 시작일
+      required: true
+      schema:
+        type: string
+        format: date
+        example: 2022-11-09
+    endDate:
+      name: endDate
+      in: query
+      description: 종료일
+      required: true
+      schema:
+        type: string
+        format: date
+        example: 2022-11-09
+    reportType:
+      name: type
+      in: path
+      description: campaign analytics report type
+      required: true
+      schema:
+        type: string
+        enum:
+          - REPORT
+          - TOTAL
+          - INDIVIDUAL
+    emails:
+      name: emails
+      in: query
+      description: One or more emails. separator is ','.
+      required: true
+      schema:
+        type: string
+        example: user1@anypointmedia.com,user2@anypointmedia.com
+    translation:
+      name: type
+      in: query
+      description: campaign analytics report translation
+      required: false
+      default: KO
+      schema:
+        type: string
+        enum:
+          - KO
+          - EN
+    packageName:
+      name: packageName
+      in: query
+      description: campaign conversion's package name
+      required: true
+      schema:
+        type: string
+        example: com.kia.red
+  schemas:

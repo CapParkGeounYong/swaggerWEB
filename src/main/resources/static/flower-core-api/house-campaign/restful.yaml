@@ -1,0 +1,80 @@
+campaignAds:
+  put:
+    tags:
+      - house-campaign
+    summary: Resubmit House Campaign
+    operationId: submit
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/FillerCampaignModel"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int32
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+list:
+  get:
+    tags:
+      - house-campaign
+    summary: Fetch List of House Campaign
+    operationId: fetchAdsById
+    parameters:
+      - name: campaignType
+        in: query
+        description: 'campaign type'
+        required: true
+        schema:
+          type: string
+          enum:
+            - FILLER
+            - ENDING
+      - name: orgType
+        in: query
+        description: 'campaign type'
+        required: true
+        schema:
+          type: string
+          enum:
+            - PUBLISHER
+            - PLATFORM
+      - name: participantId
+        in: query
+        description: 'participantId'
+        required: false
+        schema:
+          type: integer
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/components/schemas/FillerCampaignModel"
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found

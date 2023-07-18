@@ -1,0 +1,92 @@
+adAgencies:
+  get:
+    tags:
+      - adAgency
+      - campaign-creation-ui
+    summary: Get all advertisers id, name lists for campaign Creation
+    operationId: fetchAllWithMemberInfo
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/AdAgencyWithMember'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+dsps:
+  get:
+    tags:
+      - adAgency
+      - campaign-creation-ui
+    summary: Get all advertisers id, name lists for campaign Creation
+    operationId: fetchAllWithMemberInfo
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/AdAgencyTag'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+placementsAssignedToAdAgency:
+  get:
+    tags:
+      - placement
+    summary: Get Placements by ad agency id
+    operationId: getOwnedOrDelegatedPlacementsByAdAgency
+    parameters:
+      - name: id
+        in: path
+        description: ad agency id
+        schema:
+          type: integer
+          format: int32
+      - name: creativeType
+        in: query
+        description: creativeType
+        schema:
+          $ref: '../creative/schemas.yaml#/components/schemas/CreativeType'
+    response:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../media/schemas.yaml#/components/schemas/PlacementView"
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Placement not found

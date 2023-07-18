@@ -1,0 +1,72 @@
+components:
+  schemas:
+    DeviceResponse:
+      type: object
+      properties:
+        device:
+          type: integer
+          format: int64
+          example: 27223572
+        platformId:
+          type: integer
+          format: int64
+          example: 1
+        platformName:
+          type: string
+          example: 'art'
+        type:
+          type: string
+          example: 'uhd2'
+        createdAt:
+          type: string
+          format: date-time
+        testing:
+          type: boolean
+          nullable: false
+          default: false
+    DeviceAdditionalInfo:
+      type: object
+      properties:
+        platformId:
+          type: integer
+          format: int64
+        platformName:
+          type: string
+          example: 'art'
+        type:
+          type: string
+          example: 'uhd2'
+    DeviceCreativeDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        creativeId:
+          type: integer
+          format: int64
+        creativeName:
+          type: string
+        playTimeInSec:
+          type: integer
+          format: int32
+        previewUrl:
+          type: string
+        priority:
+          type: integer
+          format: int32
+    DeviceAssetInfo:
+      type: object
+      properties:
+        creativeId:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        creativeName:
+          type: string
+        playTimeInSec:
+          type: integer
+          format: int32
+        previewUrl:
+          type: string

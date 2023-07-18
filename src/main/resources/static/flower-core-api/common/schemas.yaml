@@ -1,0 +1,180 @@
+components:
+  parameters:
+    pageSize:
+      name: pageSize
+      in: query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 10
+        example: 10
+    pageSortOrder:
+      name: pageSortOrder
+      in: query
+      required: false
+      schema:
+        type: string
+        enum:
+          - ASC
+          - DESC
+        default: ASC
+        example: ASC
+    pageNumber:
+      name: pageNumber
+      in: query
+      required: false
+      schema:
+        type: integer
+        format: int32
+        default: 1
+        example: 1
+    decision:
+      name: decision
+      in: query
+      required: true
+      schema:
+        $ref: '#/components/schemas/ReviewDecisionType'
+  schemas:
+    Page:
+      type: object
+      properties:
+        totalRows:
+          type: integer
+          format: int32
+          example: 1234
+        data:
+          type: array
+          items:
+            type: object
+    CommonIdDisplayName:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        displayName:
+          type: string
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+    ConstantTargetingView:
+      allOf:
+        - $ref: '../target/schemas.yaml#/components/schemas/TargetingView'
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              example: 1
+            name:
+              type: string
+              example: 주류
+    ConstantTargetingIdName:
+      allOf:
+        - $ref: '#/components/schemas/CommonIdDisplayName'
+        - type: object
+          properties:
+            targetingId:
+              type: integer
+              format: int64
+              example: 1
+            targetCategoryNames:
+              type: array
+              items:
+                type: string
+    TargetingDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+          default: 0
+          description: targetingId
+        holder:
+          type: string
+          example: CONSTANT_TARGETING
+        target:
+          type: array
+          items:
+            $ref: '#/components/schemas/TargetDetail'
+    TargetDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        inclusive:
+          type: boolean
+        targetId:
+          type: integer
+          format: int64
+        targetCategoryId:
+          type: integer
+          format: int64
+        targetCategoryName:
+          type: string
+        targetCategoryParentId:
+          type: integer
+          format: int64
+    UploadFileInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        fileName:
+          type: string
+          example: text.txt
+        fileUrl:
+          type: string
+          example: "https://ff-stage-creatives.s3.ap-northeast-2.amazonaws.com/CAMPAIGN/2022/11/07/185c05e7-2a78-49ed-8d5f-336ff7c95e41.pdf"
+        fileSize:
+          type: integer
+          format: int32
+          example: 49316
+        createdAt:
+          type: string
+          format: date-time
+    ReviewDecisionType:
+      type: string
+      nullable: false
+      default: ACCEPTED
+      enum:
+        - ACCEPTED
+        - REJECTED
+    HttpDescriptionModel:
+      type: object
+      properties:
+        url:
+          type: string
+        method:
+          type: string
+          default: GET
+          enum:
+            - GET
+            - POST
+            - PUT
+            - DELETE
+            - HEAD
+            - PATCH
+        headers:
+          type: object
+          additionalProperties:
+            type: string
+        body:
+          type: object
+        followRedirection:
+          type: boolean

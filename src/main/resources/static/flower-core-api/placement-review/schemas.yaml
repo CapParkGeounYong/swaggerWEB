@@ -1,0 +1,210 @@
+components:
+  parameters:
+    placementId:
+      name: placementId
+      in: path
+      description: placement ID
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 1
+  schemas:
+    PlacementReviewPageResponseCreativeType:
+      type: string
+      enum:
+        - VIDEO
+        - IMAGE
+        - TEXT
+    PlacementReviewPageResponseContent:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 소유사
+          example: 1
+          nullable: false
+        contentName:
+          type: string
+          description: 소유사
+          example: 채널명
+          nullable: false
+    PlacementReviewPageResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 영역 id
+          example: 1
+          nullable: false
+        createdAt:
+          type: string
+          format: date-time
+          description: 등록일
+          example: 2022-10-14
+          nullable: false
+        createdBy:
+          type: integer
+          format: int64
+          description: 생성한 member id
+          example: 1
+          nullable: false
+        creativeType:
+          $ref: "#/components/schemas/PlacementReviewPageResponseCreativeType"
+        placementName:
+          type: string
+          description: 영역 이름
+          example: 영역#1
+          nullable: false
+        publisherId:
+          type: integer
+          format: int64
+          description: 소유사 id
+          example: 1
+          nullable: false
+        publisherName:
+          type: string
+          description: 소유사 이름
+          example: 퍼블리셔 One
+          nullable: false
+        content:
+          $ref: "#/components/schemas/PlacementReviewPageResponseContent"
+        totalProcessedReviewCount:
+          type: integer
+          format: int32
+          description: 승인현황
+          example: 3
+          nullable: false
+        totalReviewCount:
+          type: integer
+          format: int32
+          description: 승인현황(전체단계)
+          example: 3
+          nullable: false
+        owner:
+          allOf:
+            - $ref: '../common/schemas.yaml#/components/schemas/CommonIdDisplayName'
+            - type: object
+    ReasonForRejection:
+      type: object
+      properties:
+        message:
+          type: string
+          example: reason for rejection
+    ReviewProcess:
+      type: object
+      properties:
+        platformId:
+          type: integer
+          format: int64
+          description: platform participant id
+          default: 0
+          example: 1
+          nullable: false
+        platformName:
+          type: string
+          description: platform 이름
+          default: ''
+          example: SKB
+          nullable: false
+        operatorId:
+          type: integer
+          format: int64
+          description: platform participant id
+          default: 0
+          example: 1
+          nullable: false
+        operatorName:
+          type: string
+          description: platform 이름
+          default: ''
+          example: SKB
+          nullable: false
+        contentDelegations:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReviewContentDelegation"
+    ReviewContentDelegation:
+      type: object
+      properties:
+        reviewSequence:
+          type: integer
+          format: int32
+          description: 심사 순번
+          default: 0
+          example: 2
+          nullable: false
+        publisherId:
+          type: integer
+          format: int64
+          description: publisher id
+          default: 0
+          example: 1
+          nullable: false
+        publisherName:
+          type: string
+          description: publisher 이름
+          default: ''
+          example: CJ Enm
+          nullable: false
+        owner:
+          type: boolean
+          default: false
+          nullable: false
+    PlacementReviewHistoryDto:
+      type: object
+      properties:
+        reviewStatus:
+          type: string
+          description: 'review status'
+          default: 'REJECTED'
+          example: REJECTED
+          nullable: false
+        participant:
+          type: string
+          description: participant 이름
+          example: SKB
+          nullable: false
+          default: ''
+        reviewerAccount:
+          type: string
+          description: reviewer account
+          example: 'reviewer account'
+          nullable: true
+        reviewerName:
+          type: string
+          description: reviewer 이름
+          example: SKB
+          nullable: true
+        reviewTime:
+          type: string
+          format: date-time
+          description: review 시간
+        reviewerComment:
+          type: string
+          description: reviewer's comment
+    PlacementReviewHistoryListDto:
+      type: object
+      properties:
+        reject-count:
+          type: integer
+          format: int32
+          nullable: false
+        accept-count:
+          type: integer
+          format: int32
+          nullable: false
+        awaiting-count:
+          type: integer
+          format: int32
+          nullable: false
+        reviewing-count:
+          type: integer
+          format: int32
+          nullable: false
+        placement-reivew-dtos:
+          type: array
+          items:
+            $ref: "#/components/schemas/PlacementReviewHistoryDto"

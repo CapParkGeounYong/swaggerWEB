@@ -1,0 +1,225 @@
+components:
+  schemas:
+    RoleType:
+      type: string
+      enum:
+        - MANAGER
+        - USER
+    MemberStatus:
+      type: string
+      default: NORMAL
+      enum:
+        - NORMAL
+        - EXPIRED
+        - DELETED
+    ParticipantCreateForm:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          example: 1
+        publisher:
+          type: boolean
+          example: false
+          default: false
+        platform:
+          type: boolean
+          example: false
+          default: false
+        agency:
+          type: boolean
+          example: false
+          default: false
+        advertiser:
+          type: boolean
+          example: false
+          default: false
+        send-email:
+          type: boolean
+          example: false
+          default: true
+        name:
+          type: string
+          example: Participant Name
+          nullable: false
+          maxLength: 255
+          default: ''
+        address:
+          type: string
+          example: Participant Address
+          nullable: false
+          maxLength: 255
+          default: ''
+        website:
+          type: string
+          example: Participant Website
+          nullable: false
+          maxLength: 255
+          default: ''
+        representative-id:
+          type: string
+          example: Representative Id
+          nullable: false
+          maxLength: 255
+          default: ''
+        representative-name:
+          type: string
+          example: Representative Name
+          nullable: false
+          maxLength: 255
+          default: ''
+        representative-email:
+          type: string
+          example: Representative Email
+          nullable: false
+          maxLength: 255
+          default: ''
+        representative-phone-number:
+          type: string
+          example: Representative PhoneNumber
+          nullable: false
+          maxLength: 255
+          default: ''
+    ParticipantUpdateForm:
+      type: object
+      properties:
+        name:
+          type: string
+          example: Participant Name
+          nullable: false
+          maxLength: 255
+          default: ''
+        address1:
+          type: string
+          example: Participant Address
+          nullable: false
+          maxLength: 255
+          default: ''
+        website:
+          type: string
+          example: Participant Website
+          nullable: false
+          maxLength: 255
+          default: ''
+        publisher:
+          type: boolean
+          example: false
+          default: false
+        platform:
+          type: boolean
+          example: false
+          default: false
+        agency:
+          type: boolean
+          example: false
+          default: false
+        advertiser:
+          type: boolean
+          example: false
+          default: false
+    ParticipantInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          example: 1
+        publisher:
+          type: integer
+          format: int64
+          example: 2345
+        platform:
+          type: integer
+          format: int64
+          example: 2345
+        agency:
+          type: integer
+          format: int64
+          example: 2345
+        advertiser:
+          type: integer
+          format: int64
+          example: 2345
+        name:
+          type: string
+          example: Participant Name
+          nullable: false
+          maxLength: 255
+          default: ''
+        address1:
+          type: string
+          example: Participant Address1
+          maxLength: 255
+        website:
+          type: string
+          example: Participant Website
+          nullable: false
+          maxLength: 255
+          default: ''
+        members:
+          type: array
+          items:
+            $ref: '#/components/schemas/ParticipantMember'
+    ParticipantMember:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          example: 1
+        memberAccount:
+          type: string
+          example: example
+        memberName:
+          type: string
+          example: name
+        memberEmail:
+          type: string
+          example: 'example@example.com'
+          nullable: false
+          default: ''
+        memberTel:
+          type: string
+          example: '02-1234-5678'
+        memberMobile:
+          type: string
+          example: '010-5555-1111'
+        memberRoleName:
+          type: string
+          example: 'MANAGER'
+        emailOnReview:
+          type: boolean
+        memberStatus:
+          $ref: "#/components/schemas/MemberStatus"
+    ParticipantGenealogyTag:
+      description: 특정 Participant와 연결된 모든 Publisher, Agency, Advertiser, Platform ID들을 표현.
+      allOf:
+        - $ref: "../common/schemas.yaml#/components/schemas/Tag"
+        - type: object
+          properties:
+            publisherId:
+              type: integer
+              format: int64
+            platformId:
+              type: integer
+              format: int64
+            advertiserId:
+              type: integer
+              format: int64
+            adAgencyId:
+              type: integer
+              format: int64
+    ParticipantTag:
+      description: Publisher, Agency, Advertiser, Platform 등 Participant 상속 조직 조회시 자신의 ID와 ParticipantId를 포함해 리턴하는 경우 사용
+      allOf:
+        - $ref: "../common/schemas.yaml#/components/schemas/Tag"
+        - type: object
+          properties:
+            participantId:
+              type: integer
+              format: int64
+

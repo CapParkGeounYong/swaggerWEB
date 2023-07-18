@@ -1,0 +1,169 @@
+list:
+  get:
+    tags:
+      - campaign-review
+    summary: list of campaign reviews
+    operationId: getCampaignReviews
+    parameters:
+      - name: participantId
+        in: query
+        description: 'participant Id'
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: type
+        in: query
+        description: 'submit type'
+        required: false
+        schema:
+          type: string
+          enum:
+            - NEW
+            - ADD
+            - CHANGE
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+            - campaignReviewPageResponse_reviewIds
+            - campaignReviewPageResponse_submitType
+            - campaignReviewPageResponse_createdAt
+            - campaignReviewPageResponse_ownerId
+            - campaignReviewPageResponse_ownerName
+            - campaignReviewPageResponse_createdById
+            - campaignReviewPageResponse_createdByAccount
+            - campaignReviewPageResponse_createdByName
+            - campaignReviewPageResponse_campaignId
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "./../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: 'schemas.yaml#/components/schemas/CampaignReviewPageResponse'
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found
+idCancel:
+  get:
+    tags:
+      - campaign
+    summary: cancel Campaign Review
+    operationId: cancelCampaignReview
+    parameters:
+      - name: campaignId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: boolean
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found
+historyList:
+  get:
+    tags:
+      - campaign-review
+    summary: Fetch ad review hitories by a campaign id
+    operationId: fetchAllAdReviewHistoryBy
+    parameters:
+      - name: campaignId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "schemas.yaml#/components/schemas/AdReviewHistoryListDto"
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found
+idReviews:
+  patch:
+    tags:
+      - campaign-review
+      - decision-reviews
+    summary: Approve or deny campaign's ad reviews
+    operationId: decisionCampaignReview
+    parameters:
+      - name: campaignId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: participantId
+        in: query
+        description: 'participant Id'
+        required: false
+        schema:
+          type: integer
+          format: int32
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/CampaignReviewDecision"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found

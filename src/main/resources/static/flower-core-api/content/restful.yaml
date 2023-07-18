@@ -1,0 +1,485 @@
+content:
+  get:
+    tags:
+      - content
+    summary: Get Content by ID
+    operationId: findBy
+    parameters:
+      - name: id
+        in: path
+        description: 'find publisher info'
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/Content'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+  patch:
+    tags:
+      - content
+      - content-edit-ui
+    summary: Update Content
+    operationId: update
+    parameters:
+      - name: id
+        in: path
+        description: 'find publisher info'
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              title:
+                type: string
+                example: APM
+              forKids:
+                type: boolean
+                example: false
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+#        content:
+#          application/json:
+#            schema:
+#              $ref: 'schemas.yaml#/components/schemas/Content'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+contents:
+  post:
+    tags:
+      - content
+      - content-creation-ui
+    summary: Create Content
+    operationId: create
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              ownerPublisherId:
+                type: integer
+                format: int64
+                description: publisher Id of this content
+                example: 1
+                nullable: false
+              title:
+                type: string
+                example: APM
+                nullable: false
+              forKids:
+                type: boolean
+                example: false
+                nullable: false
+              minSuitableAge:
+                type: integer
+                nullable: true
+              description:
+                type: string
+                nullable: true
+              attributes:
+                type: string
+                nullable: true
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/ContentModel'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+  get:
+    tags:
+      - content
+      - content-list-ui
+    summary: Get content list by Publisher id
+    operationId: findBy
+    parameters:
+      - name: publisherId
+        in: query
+        description: 'publisher id'
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 1
+      - name: keyword
+        in: query
+        description: 'custom search word. search content name or content id  '
+        required: false
+        schema:
+          type: string
+          example: 'jtbc'
+      - name: forKids
+        in: query
+        description: 'for kids or not'
+        required: false
+        schema:
+          type: boolean
+          example: true
+      - name: haveDelegator
+        in: query
+        description: 'haveDelegator'
+        required: false
+        schema:
+          type: boolean
+          example: true
+      - name: haveDelegatee
+        in: query
+        description: 'haveDelegator'
+        required: false
+        schema:
+          type: boolean
+          example: true
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+            - contentModel_id
+            - contentModel_title
+            - contentModel_forKids
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/ContentModel'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+belongTo:
+  get:
+    tags:
+      - content
+    summary: Get content list belong to publisher
+    operationId: fetchContentsBelongTo
+    parameters:
+      - name: publisherId
+        in: query
+        description: 'publisher id'
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/ContentForPlacementCreation'
+contentDelegations:
+  post:
+    tags:
+      - content
+    summary: Delegate Content
+    operationId: delegate
+    parameters:
+      - name: contentId
+        in: path
+        description: 'content id'
+        required: true
+        schema:
+          type: integer
+          format: int32
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              contentId:
+                type: integer
+                format: int64
+                description: content Id
+                example: 1
+              delegatorId:
+                type: integer
+                format: int64
+                description: publisher Id of content delegator
+              delegatorCommission:
+                type: number
+                format: double
+                description: 20.0
+              delegateeId:
+                type: integer
+                format: int64
+                description: publisher Id of content delegatee
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                result:
+                  type: string
+                  example: successful
+      '400':
+        description: Invalid input data supplied
+
+contentDelegationGenealogies:
+  get:
+    tags:
+      - content
+    summary: Get content delegation list associated with given Content id and publisher id(if not given, login user's publisher id will be used). It provides upward direction list as ancestors and children list as children
+    operationId: genealogies
+    parameters:
+      - name: contentId
+        in: path
+        description: 'content id'
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: publisherId
+        in: query
+        description: 'publisher Id'
+        required: false
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/ContentDelegationGenealogies'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Content delegation Data not found
+contentDelegationAncestors:
+  get:
+    tags:
+      - content
+    summary: Get content delegation list associated with given Content id and publisher id(if not given, login user's publisher id will be used). It provides upward direction list only
+    operationId: ancestors
+    parameters:
+      - name: contentId
+        in: path
+        description: 'content id'
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: publisherId
+        in: query
+        description: 'publisher Id'
+        required: false
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/DelegationSummary'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+contentDelegationDescendants:
+  get:
+    tags:
+      - content
+    summary: Get content delegation list associated with given Content id and publisher id(if not given, login user's publisher id will be used). It provides downward direction list only
+    operationId: descendants
+    parameters:
+      - name: contentId
+        in: path
+        description: 'content id'
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: publisherId
+        in: query
+        description: 'publisher Id'
+        required: false
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/DelegationSummary'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+contentDelegationChildren:
+  get:
+    tags:
+      - content
+    summary: Get content delegation list associated with given Content id and publisher id(if not given, login user's publisher id will be used). It provides just children but not descendants.
+    operationId: children
+    parameters:
+      - name: contentId
+        in: path
+        description: 'content id'
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: publisherId
+        in: query
+        description: 'publisher Id'
+        required: false
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/DelegationSummary'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+contentDelegation:
+  delete:
+    tags:
+      - content
+      - content-delegation
+    operationId: deleteContentDelegation
+    parameters:
+      - name: id
+        in: path
+        description: 'Delete content delegation'
+        schema:
+          type: string
+    responses:
+      '204':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+      '404':
+        description: Given content delegation id not found

@@ -1,0 +1,68 @@
+components:
+  schemas:
+    HouseCampaign:
+      type: object
+      properties:
+        campaignId:
+          type: integer
+          format: int64
+          example: 1
+        type:
+          type: string
+    FillerCampaignModel:
+      type: object
+      properties:
+        campaignId:
+          type: integer
+          format: int64
+          example: 1
+        ads:
+          type: array
+          items:
+            $ref: "#/components/schemas/FillerAdModel"
+        placements:
+          type: array
+          items:
+            $ref: "../media/schemas.yaml#/components/schemas/PlacementView"
+    FillerAdModel:
+      type: object
+      properties:
+        adId:
+          type: integer
+          format: int64
+          default: null
+        adVersionId:
+          type: integer
+          format: int64
+          default: null
+        creativeId:
+          type: integer
+          format: int64
+        creativeName:
+          type: string
+        sortOrder:
+          type: integer
+          format: int32
+        placementsExcluded:
+          type: array
+          items:
+            type: integer
+            format: int64
+            nullable: false
+            default: 0
+        assetPreview:
+          type: string
+        deleted:
+          type: boolean
+          nullable: false
+          default: false
+        alternativeCreativeId:
+          type: integer
+          format: int64
+        alternativeCreativeName:
+          type: string
+        alternativeAssetPreview:
+          type: string
+        operationStatus:
+          $ref: "../ad/schemas.yaml#/components/schemas/AdStatus"
+          nullable: false

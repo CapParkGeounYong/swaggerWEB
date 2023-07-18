@@ -1,0 +1,233 @@
+components:
+  schemas:
+    ContentForList:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: APM
+        contentTypeId:
+          type: integer
+          format: int64
+          example: 1
+        forKids:
+          type: boolean
+          example: false
+        residualCommission:
+          type: number
+          format: double
+          example: 30.0
+        delegator:
+          $ref: "#/components/schemas/ContentForListDelegator"
+        delegatees:
+          type: array
+          items:
+            $ref: "#/components/schemas/ContentForListDelegatee"
+    Content:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        owner:
+          type: integer
+          format: int64
+          description: publisher Id of this content
+          example: 1
+        title:
+          type: string
+          example: APM
+        forKids:
+          type: boolean
+          example: false
+        contentTypeId:
+          type: integer
+          format: int64
+          example: 1
+    ContentModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        owner:
+          $ref: "#/components/schemas/ContentOwner"
+        title:
+          type: string
+          example: SBS Sports
+        description:
+          type: string
+          example: this is mind blowing contents
+        forKids:
+          type: boolean
+    #        attributes:
+    #          type: object
+    #          properties:
+    #            channel:
+    #              type: object
+    #              properties:
+    #                epgCallSign:
+    #                  type: string
+    #                  example: xxx
+    #                description:
+    #                  type: string
+    #                  example: xxxx
+    #                adBreakDuration:
+    #                  type: integer
+    #                  format: int32
+    #                  example: 15
+    ContentOwner:
+      type: object
+      properties:
+        publisherId:
+          type: integer
+          format: int64
+          example: 0
+        name:
+          type: string
+          example: SBS Co.Ltd
+    ContentForListDelegatee:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: mezo media
+        commission:
+          type: number
+          format: double
+          example: 30.0
+    ContentForPlacementCreation:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        title:
+          type: string
+          example: APM
+    ContentForListDelegator:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: mezo media
+        commission:
+          type: number
+          format: double
+          example: 30.0
+    ContentDelegationModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+          description: Content Delegation Id
+        delegatorId:
+          type: integer
+          format: int64
+          description: publisher Id
+          example: 1
+        delegatorName:
+          type: string
+          description: publisher Name
+          example: SKB
+        delegateeId:
+          type: integer
+          format: int64
+          description: publisher Id
+          example: 1
+        delegateeName:
+          type: string
+          description: publisher Name
+          example: SKB
+        delegatorCommission:
+          type: number
+          format: double
+          example: 30.0
+        residualCommission:
+          type: number
+          format: double
+          example: 30.0
+        delegationPath:
+          type: string
+          example: 1\|10\|33
+        distanceFromOwner:
+          type: integer
+          format: int32
+    ContentDelegationGenealogies:
+      type: object
+      properties:
+        ancestors:
+          type: array
+          items:
+            $ref: "#/components/schemas/DelegationSummary"
+        children:
+          type: array
+          items:
+            $ref: "#/components/schemas/DelegationSummary"
+    DelegationSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        publisher:
+          $ref: '../common/schemas.yaml#/components/schemas/CommonIdDisplayName'
+        commission:
+          type: number
+          format: double
+          example: 5.5
+        distanceFromOwner:
+          type: integer
+          format: int32
+          example: 1
+    DelegationViewSummary:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        publisher:
+          $ref: '../publisher/schemas.yaml#/components/schemas/PublisherView'
+        commission:
+          type: number
+          format: double
+          example: 5.5
+        distanceFromOwner:
+          type: integer
+          format: int32
+          example: 1
+    ContentType:
+      type: string
+      enum:
+        - LINEAR_VIDEO
+        - DISPLAY
+        - VOD
+    ContentPlacement:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        placement:
+          type: array
+          items:
+            $ref: "../common/schemas.yaml#/components/schemas/CommonIdDisplayName"

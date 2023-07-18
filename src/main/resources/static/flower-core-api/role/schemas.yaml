@@ -1,0 +1,28 @@
+components:
+  schemas:
+    RoleType:
+      type: string
+      enum:
+        - SYSTEM_ADMIN
+        - ADMIN
+        - MANAGER
+        - USER
+        - DEVELOPER
+        - ANONYMOUS
+    RoleDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+          nullable: true
+        name:
+          type: string
+          default: ''
+          description: permission 을 카테고리화 하여 관리하기 위함.
+          example: 우리동네 광고 일반 광고주
+        type:
+          $ref: "#/components/schemas/RoleType"
+          default: USER
+

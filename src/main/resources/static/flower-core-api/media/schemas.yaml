@@ -1,0 +1,585 @@
+components:
+  schemas:
+    CueType:
+      type: string
+      example: DTMF
+      enum:
+        - EPG_VIRTUAL
+        - SCTE35
+        - DTMF
+        - MANUAL
+    UpdatablePlacementStatus:
+      type: string
+      enum:
+        - TESTING
+        - ACTIVATED
+        - INACTIVATED
+    PlacementStatus:
+      type: string
+      enum:
+        - DRAFT
+        - REVIEWING
+        - TESTING
+        - ACTIVATED
+        - INACTIVATED
+        - REJECTED
+    ReviewTemplateConfigDescription:
+      type: object
+      properties:
+        participantId:
+          type: integer
+          format: int64
+          description: 소유사 id
+          example: 1
+          nullable: false
+        participantName:
+          type: string
+          description: 소유사 이름
+          default: ''
+          example: SKB
+          nullable: false
+    ReviewUnit:
+      type: object
+      properties:
+        reviewSequence:
+          type: integer
+          format: int32
+          description: 심사 순번
+          default: 0
+          example: 2
+          nullable: false
+        participantId:
+          type: integer
+          format: int64
+          description: 소유사 id
+          example: 1
+          nullable: false
+        participantName:
+          type: string
+          description: 소유사 이름
+          default: ''
+          example: SKB
+          nullable: false
+        skipped:
+          type: boolean
+    PlacementView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 영역 id
+          example: 1
+          nullable: true
+        creativeType:
+          $ref: '../creative/schemas.yaml#/components/schemas/CreativeType'
+        publisherId:
+          type: integer
+          format: int64
+          description: 소유사 id
+          example: 1
+          nullable: true
+        publisherName:
+          type: string
+          description: 소유사 이름
+          example: 퍼블리셔 One
+          nullable: true
+        placementName:
+          type: string
+          description: 영역 이름
+          example: 영역#1
+          nullable: true
+        contentId:
+          type: integer
+          format: int64
+          description: 컨텐트 id
+          example: 1
+          nullable: true
+        contentName:
+          type: string
+          description: 컨텐트 이름
+          example: 퍼블리셔 One
+          nullable: true
+        platformId:
+          type: integer
+          format: int64
+          description: 플랫폼 운영사 id
+          example: 1
+          nullable: true
+        platformName:
+          type: string
+          description: 플랫폼 운영사
+          example: 에스케이브론드밴드 주식회사
+          nullable: true
+    PlacementPageResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 영역 id
+          example: 1
+          nullable: false
+        owned:
+          type: boolean
+          description: 소유사
+          example: true
+          nullable: false
+        creativeType:
+          $ref: '../creative/schemas.yaml#/components/schemas/CreativeType'
+        publisherId:
+          type: integer
+          format: int64
+          description: 소유사 id
+          example: 1
+          nullable: false
+        publisherName:
+          type: string
+          description: 소유사 이름
+          example: 퍼블리셔 One
+          nullable: false
+        placementName:
+          type: string
+          description: 영역 이름
+          example: 영역#1
+          nullable: false
+        content:
+          $ref: "#/components/schemas/PlacementPageResponseContent"
+        platformName:
+          type: string
+          description: 플랫폼 운영사
+          example: 에스케이브론드밴드 주식회사
+          nullable: false
+        placementStatus:
+          $ref: "#/components/schemas/PlacementStatus"
+        adAgencyCount:
+          type: integer
+          format: int32
+          description: 허용 에이전시 갯수
+          example: 3
+          nullable: false
+        totalProcessedReviewCount:
+          type: integer
+          format: int32
+          description: 승인현황
+          example: 3
+          nullable: false
+        totalReviewCount:
+          type: integer
+          format: int32
+          description: 승인현황(전체단계)
+          example: 3
+          nullable: false
+    PlacementPageResponseContent:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 소유사
+          example: 1
+          nullable: false
+        contentName:
+          type: string
+          description: 소유사
+          example: 채널명
+          nullable: false
+    PlacementDetailAdAgency:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        name:
+          type: string
+          example: 나스미디어
+          nullable: false
+    LinearVideoAttributes:
+      type: object
+      properties:
+        cueType:
+          $ref: "#/components/schemas/CueType"
+        programId:
+          type: integer
+          format: int64
+        dtmfCode:
+          type: integer
+          format: int32
+          example: -999
+          nullable: true
+        cueDelay:
+          type: integer
+          format: int32
+          example: 8000
+          nullable: true
+        maxDuration:
+          type: integer
+          format: int64
+          example: 60000
+          nullable: true
+    DisplayAttributeDefaultAsset:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        name:
+          type: string
+          example: TS-1080p-BTV-SMART
+          nullable: false
+    DisplayAttributes:
+      type: object
+      properties:
+        screenCode:
+          type: string
+          example: HOME.BANNER.MAIN
+        screenWidth:
+          type: integer
+          format: int32
+          example: 1920
+        screenHeight:
+          type: integer
+          format: int32
+          example: 400
+        inventoryCount:
+          type: integer
+          format: int32
+          example: 3
+        membership:
+          type: string
+          example: SUBSCRIBER
+        fallbackCreativeId:
+          type: integer
+          format: int32
+          example: 1
+        fallbackCreativeName:
+          type: string
+          example: VOD.MOVIE
+          nullable: true
+        clickUrl:
+          type: boolean
+          example: true
+        defaultAsset:
+          $ref: "#/components/schemas/DisplayAttributeDefaultAsset"
+    VodAttributes:
+      type: object
+      properties:
+        assetProfileIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+            example: 1
+        menuCode:
+          type: string
+          example: VOD.MOVIE
+          nullable: true
+        inventoryTimeInSec:
+          type: integer
+          format: int32
+          example: 15
+        inventoryCount:
+          type: integer
+          format: int32
+          example: 3
+        slots:
+          type: array
+          items:
+            type: string
+            example: PREROLL
+        watches:
+          type: array
+          items:
+            type: string
+            example: FIRST_WATCH
+        purchaseType:
+          type: string
+          example: PAID
+        membership:
+          type: string
+          example: SUBSCRIBER
+        skippable:
+          type: boolean
+          example: true
+        clickUrl:
+          type: boolean
+          example: true
+    PlacementAssignments:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        agencyName:
+          type: string
+          description: 대행사 이름
+          example: 대행사#1
+          nullable: false
+        agencyId:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        commission:
+          type: number
+          format: double
+          example: 1
+          nullable: false
+    PlacementAttributes:
+      type: object
+      properties:
+        linearVideo:
+          $ref: "#/components/schemas/LinearVideoAttributes"
+        display:
+          $ref: "#/components/schemas/DisplayAttributes"
+        vod:
+          $ref: "#/components/schemas/VodAttributes"
+    PlacementWithAttributes:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        contentId:
+          type: integer
+          format: int64
+          nullable: false
+        attributes:
+          $ref: "#/components/schemas/PlacementAttributes"
+    PlacementDetailDelegatorCommission:
+      type: object
+      properties:
+        delegatorId:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        delegatorName:
+          type: string
+          example: 조직#1
+          nullable: false
+        delegateeId:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        delegateeName:
+          type: string
+          example: 조직#2
+          nullable: false
+        delegatorCommissionInPercent:
+          type: number
+          format: double
+          example: 20.0
+          nullable: false
+          default: 0.0
+    PlacementDetailResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        placementName:
+          type: string
+          description: 영역 이름
+          example: 영역#1
+          nullable: false
+        ownerId:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        ownerName:
+          type: string
+          example: CJ ENM
+          nullable: false
+        createdAt:
+          type: string
+          format: date-time
+          example: '2022-01-02T12:34:56.789'
+        createdById:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        createdByAccount:
+          type: string
+          example: mocha
+          nullable: false
+        createdByName:
+          type: string
+          example: 박나림
+          nullable: false
+        creativeType:
+          $ref: '../creative/schemas.yaml#/components/schemas/CreativeType'
+        contentId:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        contentName:
+          type: string
+          example: OCN Movies
+          nullable: false
+        placementStatus:
+          $ref: "#/components/schemas/PlacementStatus"
+        adAgencies:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlacementDetailAdAgency'
+        placementReviewProcess:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: "#/components/schemas/ReviewUnit"
+        productReviewProcess:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: "#/components/schemas/ReviewUnit"
+        creativeReviewProcess:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: "#/components/schemas/ReviewUnit"
+        campaignReviewProcess:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: "#/components/schemas/ReviewUnit"
+        platformId:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        platformName:
+          type: string
+          description: 플랫폼 운영사
+          example: 에스케이브론드밴드 주식회사
+          nullable: false
+        attributes:
+          $ref: "#/components/schemas/PlacementAttributes"
+        flowerCommissionInPercent:
+          type: number
+          format: double
+          example: 5.0
+        platformCommissionInPercent:
+          type: number
+          format: double
+          example: 10.0
+        delegatorCommissions:
+          type: array
+          items:
+            $ref: "#/components/schemas/PlacementDetailDelegatorCommission"
+        ownerCommissionInPercent:
+          type: number
+          format: double
+          example: 40.0
+        encodingProfiles:
+          type: array
+          items:
+            $ref: "#/components/schemas/AssetProfile"
+    PlacementCreateRequest:
+      type: object
+      properties:
+        publisherId:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        placementName:
+          type: string
+          example: 영역#1
+          nullable: false
+          default: ''
+        contentId:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        platformId:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+        attributes:
+          $ref: "#/components/schemas/PlacementAttributes"
+        flowerCommission:
+          type: number
+          format: double
+          example: 10.0
+          nullable: false
+          default: 0.0
+        platformCommission:
+          type: number
+          format: double
+          example: 15.0
+          nullable: false
+          default: 0.0
+        creativeType:
+          $ref: '../creative/schemas.yaml#/components/schemas/CreativeType'
+        skipPlacementReview:
+          type: boolean
+          example: false
+          nullable: false
+          default: false
+        productReviewTemplates:
+          $ref: "#/components/schemas/ReviewTemplateConfigs"
+        creativeReviewTemplates:
+          $ref: "#/components/schemas/ReviewTemplateConfigs"
+        adReviewTemplates:
+          $ref: "#/components/schemas/ReviewTemplateConfigs"
+        encodingProfiles:
+          type: array
+          items:
+            type: integer
+            format: int64
+            example: 1
+    SimplePlacement:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: test 영역
+    AssetProfile:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+          nullable: false
+          default: 0
+    ReviewTemplateConfigs:
+      type: object
+      properties:
+        chain:
+          type: array
+          items:
+            type: array
+            items:
+              type: integer
+              format: int64
+        exclusions:
+          type: array
+          items:
+            type: integer
+            format: int64

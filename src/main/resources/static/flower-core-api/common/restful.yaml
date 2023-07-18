@@ -1,0 +1,128 @@
+s3files:
+  post:
+    tags:
+      - common
+      - campaign-creation-ui
+      - creative-creation-ui
+    summary: Upload Files to S3
+    operationId: uploadFiles
+    parameters:
+      - name: type
+        in: query
+        description: 'upload type for check s3 upload path: ex) creative-origin, creative-attachment, campaign-attachment'
+        required: true
+        schema:
+          type: string
+          enum:
+            - CREATIVE_ORIGINAL
+            - CAMPAIGN_CONTRACT
+          example: 1
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              files:
+                type: array
+                items:
+                  type: string
+                  format: binary
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/UploadFileInfo'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+constantTargetings:
+  get:
+    tags:
+      - common
+      - campaign-creation-ui
+    summary: get constant targetings
+    operationId: fetchConstantTargetings
+    parameters:
+      - name: productId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: platformIds
+        in: query
+        required: false
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/ConstantTargetingView'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+targetings:
+  get:
+    tags:
+      - common
+      - campaign-creation-ui
+      - product-new-ui
+    summary: get targeting details
+    operationId: fetchTargetingBy
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/TargetingDetail'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found

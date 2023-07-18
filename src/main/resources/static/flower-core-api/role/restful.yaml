@@ -1,0 +1,104 @@
+list:
+  post:
+    summary: create role
+    tags:
+      - role
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/RoleDto"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+
+  get:
+    summary: Returns a list of role
+    tags:
+      - role
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "./../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "schemas.yaml#/components/schemas/RoleDto"
+id:
+  get:
+    summary: Returns a role
+    tags:
+      - role
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      '200':
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/components/schemas/RoleDto"
+
+  delete:
+    summary: Delete a role
+    tags:
+      - role
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+
+  put:
+    summary: Updates a role
+    tags:
+      - role
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/RoleDto"
+    responses:
+      '200':
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/components/schemas/RoleDto"

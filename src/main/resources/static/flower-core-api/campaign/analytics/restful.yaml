@@ -1,0 +1,251 @@
+overview:
+  get:
+    tags:
+      - campaign-analytics
+    summary: fetch overview of campaign analytics
+    operationId: fetchCampaignAnalyticsOverview
+    parameters:
+      - $ref: "schemas.yaml#/components/parameters/campaignId"
+      - $ref: "schemas.yaml#/components/parameters/adIds"
+      - $ref: "schemas.yaml#/components/parameters/startDate"
+      - $ref: "schemas.yaml#/components/parameters/endDate"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/CampaignAnalyticsOverviewResponse'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: analytics not found
+timeSeries:
+  get:
+    tags:
+      - campaign-analytics
+    summary: fetch time series of campaign analytics
+    operationId: fetchCampaignAnalyticsTimeSeries
+    parameters:
+      - $ref: "schemas.yaml#/components/parameters/campaignId"
+      - $ref: "schemas.yaml#/components/parameters/adIds"
+      - $ref: "schemas.yaml#/components/parameters/startDate"
+      - $ref: "schemas.yaml#/components/parameters/endDate"
+      - timeUnit:
+        name: timeUnit
+        in: query
+        required: true
+        default: DAY
+        schema:
+          $ref: "schemas.yaml#/components/schemas/CampaignAnalyticsTimeSeriesTimeUnit"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/CampaignAnalyticsTimeSeriesResponse'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: analytics not found
+content:
+  get:
+    tags:
+      - campaign-analytics
+    summary: fetch content of campaign analytics
+    operationId: fetchCampaignAnalyticsContent
+    parameters:
+      - $ref: "schemas.yaml#/components/parameters/campaignId"
+      - $ref: "schemas.yaml#/components/parameters/adIds"
+      - $ref: "schemas.yaml#/components/parameters/startDate"
+      - $ref: "schemas.yaml#/components/parameters/endDate"
+      - unit:
+        name: unit
+        in: path
+        required: true
+        default: SUMS
+        schema:
+          $ref: "schemas.yaml#/components/schemas/CampaignAnalyticsUnit"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/CampaignAnalyticsContentResponse'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: analytics not found
+region:
+  get:
+    tags:
+      - campaign-analytics
+    summary: fetch region of campaign analytics
+    operationId: fetchCampaignAnalyticsRegion
+    parameters:
+      - $ref: "schemas.yaml#/components/parameters/campaignId"
+      - $ref: "schemas.yaml#/components/parameters/adIds"
+      - $ref: "schemas.yaml#/components/parameters/startDate"
+      - $ref: "schemas.yaml#/components/parameters/endDate"
+      - $ref: "schemas.yaml#/components/parameters/regionId"
+      - $ref: "schemas.yaml#/components/parameters/regionLevel"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/CampaignAnalyticsRegionResponse'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: analytics not found
+audience:
+  get:
+    tags:
+      - campaign-analytics
+    summary: fetch audience of campaign analytics
+    operationId: fetchCampaignAnalyticsAudience
+    parameters:
+      - $ref: "schemas.yaml#/components/parameters/campaignId"
+      - $ref: "schemas.yaml#/components/parameters/adIds"
+      - $ref: "schemas.yaml#/components/parameters/startDate"
+      - $ref: "schemas.yaml#/components/parameters/endDate"
+      - $ref: "schemas.yaml#/components/parameters/audienceType"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/CampaignAnalyticsAudienceResponse'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: analytics not found
+media:
+  get:
+    tags:
+      - campaign-analytics
+    summary: fetch media of campaign analytics
+    operationId: fetchCampaignAnalyticsMedia
+    parameters:
+      - $ref: "schemas.yaml#/components/parameters/campaignId"
+      - $ref: "schemas.yaml#/components/parameters/adIds"
+      - $ref: "schemas.yaml#/components/parameters/startDate"
+      - $ref: "schemas.yaml#/components/parameters/endDate"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/CampaignAnalyticsMediaResponse'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: analytics not found
+reach:
+  get:
+    tags:
+      - campaign-analytics
+    summary: fetch reach of campaign analytics
+    operationId: fetchCampaignAnalyticsReach
+    parameters:
+      - $ref: "schemas.yaml#/components/parameters/campaignId"
+      - $ref: "schemas.yaml#/components/parameters/adIds"
+      - $ref: "schemas.yaml#/components/parameters/startDate"
+      - $ref: "schemas.yaml#/components/parameters/endDate"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/CampaignAnalyticsReachResponse'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: analytics not found
+conversion:
+  get:
+    tags:
+      - campaign-analytics
+    summary: fetch conversion of campaign analytics
+    operationId: fetchCampaignAnalyticsConversion
+    parameters:
+      - $ref: "schemas.yaml#/components/parameters/campaignId"
+      - $ref: "schemas.yaml#/components/parameters/packageName"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/CampaignAnalyticsConversionResponse'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: analytics not found

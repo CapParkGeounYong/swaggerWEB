@@ -1,0 +1,296 @@
+components:
+  schemas:
+    CreativeReviewPageResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 소재id
+        source:
+          type: string
+          description: 소재 출처
+        createdAt:
+          type: string
+          format: date-time
+          description: 소재 제출 일시
+        name:
+          type: string
+          description: 소재 이름
+        type:
+          type: string
+          description: 소재 타입(video, image)
+        size:
+          type: string
+          description: 소재 크기
+        previewUrl:
+          type: string
+          description: 소재 프리뷰 url
+        ownerId:
+          type: integer
+          format: int64
+          description: 소유 대행사 Id
+        ownerName:
+          type: string
+          description: 소유 대행사 이름
+        attachments:
+          type: array
+          description: 첨부 파일 목록
+          items:
+            $ref: '#/components/schemas/CreativeAttachmentView'
+        deliberation:
+          type: string
+          description: 심의 정보
+          nullable: true
+        attributes:
+          type: string
+          nullable: true
+        reviews:
+          type: array
+          description: 심사 광고 영역 목록
+          nullable: true
+          items:
+            $ref: '#/components/schemas/CreativeReviewView'
+    CreativeReviewView:
+      type: object
+      properties:
+        placementId:
+          type: integer
+          format: int64
+          description: 광고 영역 id
+        placementName:
+          type: string
+          description: 광고 영역 이름
+        contentName:
+          type: string
+          description: 콘텐츠 이름
+        sequence:
+          type: integer
+          format: int32
+        status:
+          type: string
+          description: 심사 상태
+        id:
+          type: integer
+          format: int64
+          description: 삼사 Id
+    CreativeAttachmentView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: attachment id(on creative)
+        fileName:
+          type: string
+          description: 첨부 파일 이름
+        fileUrl:
+          type: string
+          description: 광고 영역 url
+    CreativeReviewHistory:
+      type: object
+      properties:
+        creativeId:
+          type: integer
+          format: int64
+          description: 소재 id
+        creativeName:
+          type: string
+          description: 소재 이름
+        creativePreviewUrl:
+          type: string
+          description: 소재 프리뷰 url
+          nullable: false
+          default: ''
+        creativePlacementReviewStatus:
+          $ref: "../review/schemas.yaml#/components/schemas/ReviewStatus"
+          nullable: false
+          default: DRAFT
+        participantName:
+          type: string
+          description: 관계사 이름
+          nullable: false
+          default: ''
+        placementName:
+          type: string
+          description: 영역 이름
+          nullable: false
+          default: ''
+        reviewStatus:
+          $ref: "../review/schemas.yaml#/components/schemas/ReviewStatus"
+          nullable: false
+          default: DRAFT
+        reviewerAccount:
+          type: string
+          description: reviewer account
+          example: 'reviewer account'
+          nullable: true
+        reviewerName:
+          type: string
+          description: reviewer 이름
+          example: SKB
+          nullable: true
+        reviewedAt:
+          type: string
+          format: date-time
+          description: review 시간
+          nullable: true
+        reviewerComment:
+          type: string
+          description: reviewer's comment
+          nullable: false
+          default: ''
+    CreativeReviewHistoriesPerCreative:
+      type: object
+      properties:
+        creativeId:
+          type: integer
+          format: int64
+          description: 소재 id
+        creativeName:
+          type: string
+          description: 소재 이름
+        creativePreviewUrl:
+          type: string
+          description: 소재 프리뷰 url
+          nullable: false
+          default: ''
+        rejectCountTotal:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        acceptCountTotal:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        awaitingCountTotal:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        reviewingCountTotal:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        participants:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreativeReviewHistoriesPerParticipant"
+    CreativeReviewHistoriesPerParticipant:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 관계사 아이디
+          nullable: false
+          default: 0
+        participantName:
+          type: string
+          description: 관계사 이름
+          nullable: false
+          default: ''
+        rejectCount:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        acceptCount:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        awaitingCount:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        reviewingCount:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        placements:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreativeReviewHistoriesPerPlacement"
+    CreativeReviewHistoriesPerPlacement:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 영역 아이디
+          nullable: false
+          default: 0
+        placementName:
+          type: string
+          description: 영역 이름
+          nullable: false
+          default: ''
+        reviewStatus:
+          $ref: "../review/schemas.yaml#/components/schemas/ReviewStatus"
+          nullable: false
+          default: DRAFT
+        reviewerAccount:
+          type: string
+          description: reviewer account
+          example: 'reviewer account'
+          nullable: true
+        reviewerName:
+          type: string
+          description: reviewer 이름
+          example: SKB
+          nullable: true
+        reviewedAt:
+          type: string
+          format: date-time
+          description: review 시간
+          nullable: true
+        reviewerComment:
+          type: string
+          description: reviewer's comment
+          nullable: false
+          default: ''
+    CreativeReviewAnswer:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          default: 0
+          nullable: false
+        decision:
+          type: string
+          $ref: "../common/schemas.yaml#/components/schemas/ReviewDecisionType"
+        rejectMessage:
+          type: string
+    CreativeReviewDecisions:
+      type: object
+      properties:
+        decisions:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreativeReviewDecision'
+        comment:
+          type: string
+    CreativeReviewDecision:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          default: 0
+          nullable: false
+          description: review id
+        decision:
+          $ref: "../common/schemas.yaml#/components/schemas/ReviewDecisionType"
+    ReasonForRejection:
+      type: object
+      properties:
+        message:
+          type: string
+          example: reason for rejection

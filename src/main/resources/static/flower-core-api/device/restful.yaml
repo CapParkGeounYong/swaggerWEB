@@ -1,0 +1,153 @@
+getDevice:
+  get:
+    tags:
+      - device
+    summary: Get Device
+    operationId: fetchDevices
+    parameters:
+      - name: id
+        in: path
+        description: 디바이스 id
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 27223572
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/DeviceResponse'
+      '400':
+        description: Invalid id supplied
+deviceDistribution:
+  post:
+    tags:
+      - device
+    summary: Request Device Asset Distribution
+    operationId: createDevices
+    parameters:
+      - name: id
+        in: path
+        description: 디바이스 id
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 27223572
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+deviceAsset:
+  get:
+    tags:
+      - device
+    summary: Get Device Assets
+    operationId: fetchDeviceAssets
+    parameters:
+      - name: id
+        in: path
+        description: 디바이스 id
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 27223572
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/DeviceCreativeDto'
+      '400':
+        description: Invalid id supplied
+  post:
+    tags:
+      - device
+    summary: Save Device Assets
+    operationId: createDeviceAssets
+    parameters:
+      - name: id
+        in: path
+        description: 디바이스 id
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 27223572
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: object
+              properties:
+                id:
+                  type: integer
+                  format: int64
+                asset:
+                  type: integer
+                  format: int64
+                  nullable: false
+                  default: 0
+                priority:
+                  type: integer
+                  format: int32
+                  nullable: false
+                  default: 0
+                createdAt:
+                  type: string
+                  format: date-time
+                  example: 2023-02-10T09:59:05.804547
+                modifiedAt:
+                  type: string
+                  format: date-time
+                  example: 2023-02-10T09:59:05.804547
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/DeviceCreativeDto'
+      '400':
+        description: Invalid id supplied

@@ -1,0 +1,8 @@
+components:
+  schemas:
+    ReasonForRejection:
+      type: object
+      properties:
+        message:
+          type: string
+          example: reason for rejection

@@ -1,0 +1,97 @@
+components:
+  schemas:
+    PermissionSubject:
+      type: string
+      enum:
+        - REST_API
+        - MENU
+        - FUNCTION
+    OrgType:
+      type: string
+      enum:
+        - PUBLISHER
+        - AD_AGENCY
+        - ADVERTISER
+        - PLATFORM
+    Role:
+      type: string
+      enum:
+        - MANAGER
+        - SYSTEM_ADMIN
+        - USER
+        - DEVELOPER
+    PermissionDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          default: 0
+          example: 1
+          nullable: false
+        identifier:
+          type: string
+          default: ''
+          description: MENU 타입의 경우 backend 에서는 사용하지 않으므로 메뉴 관리가 편하신 형태로 정하시면 됩니다.
+          example: analytics.inventory.view
+        description:
+          type: string
+          default: ''
+          example: 분석-인벤토리 화면 메뉴 접근 권한
+        triggeredOn:
+          $ref: "#/components/schemas/PermissionSubject"
+          default: MENU
+        publisher:
+          type: boolean
+          example: false
+        platform:
+          type: boolean
+          example: false
+        agency:
+          type: boolean
+          example: false
+        advertiser:
+          type: boolean
+          example: false
+        roleIds:
+          type: array
+          items:
+            type: integer
+            format: int32
+    PermissionCreationDto:
+      type: object
+      properties:
+        identifier:
+          type: string
+          default: ''
+        triggeredOn:
+          $ref: "#/components/schemas/PermissionSubject"
+          default: MENU
+        publisher:
+          type: boolean
+          example: false
+          default: false
+        platform:
+          type: boolean
+          example: false
+          default: false
+        agency:
+          type: boolean
+          example: false
+          default: false
+        advertiser:
+          type: boolean
+          example: false
+          default: false
+        roleIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+            description: role id
+        description:
+          type: string
+          default: ''
+          example: 권한 생성 설명
+
+

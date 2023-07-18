@@ -1,0 +1,664 @@
+list:
+  get:
+    summary: Returns a list of participants
+    tags:
+      - participant
+    parameters:
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: participantInfo_id
+          example: participantInfo_id
+          enum:
+            - participantInfo_name
+            - participantInfo_id
+            - participantInfo_publisher
+            - participantInfo_platform
+            - participantInfo_agency
+            - participantInfo_advertiser
+            - participantInfo_address1
+            - participantInfo_website
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+      - name: platform
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: keyword for search
+        example: false
+        default: false
+      - name: publisher
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: keyword for search
+        example: false
+        default: false
+      - name: agency
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: keyword for search
+        example: false
+        default: false
+      - name: advertiser
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: keyword for search
+        example: false
+        default: false
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+        description: keyword for search
+        example: OCN
+        default: null
+
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "./../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "schemas.yaml#/components/schemas/ParticipantInfo"
+  post:
+    summary: Saves a participant
+    tags:
+      - participant
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/ParticipantCreateForm"
+    responses:
+      "200":
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+participantTags:
+  get:
+    summary: Returns a list of participants
+    tags:
+      - participant
+    parameters:
+      - name: platform
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: keyword for search
+        example: false
+        default: false
+      - name: publisher
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: keyword for search
+        example: false
+        default: false
+      - name: agency
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: keyword for search
+        example: false
+        default: false
+      - name: advertiser
+        in: query
+        required: false
+        schema:
+          type: boolean
+        description: keyword for search
+        example: false
+        default: false
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+        description: keyword for search
+        example: OCN
+        default: null
+
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../common/schemas.yaml#/components/schemas/Tag"
+publishers:
+  get:
+    summary: Returns a list of participants
+    tags:
+      - participant
+    parameters:
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: participantInfo_id
+          example: participantInfo_id
+          enum:
+            - participantInfo_name
+            - participantInfo_id
+            - participantInfo_publisher
+            - participantInfo_platform
+            - participantInfo_agency
+            - participantInfo_advertiser
+            - participantInfo_address1
+            - participantInfo_website
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+        description: keyword for search
+        example: OCN
+        default: null
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "./../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "schemas.yaml#/components/schemas/ParticipantInfo"
+                    publishers:
+                      get:
+                        summary: Returns a list of participants
+                        tags:
+                          - participant
+                        parameters:
+                          - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+                          - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+                          - pageSort:
+                            name: pageSort
+                            in: query
+                            required: false
+                            schema:
+                              type: string
+                              default: participantInfo_id
+                              example: participantInfo_id
+                              enum:
+                                - participantInfo_name
+                                - participantInfo_id
+                                - participantInfo_publisher
+                                - participantInfo_platform
+                                - participantInfo_agency
+                                - participantInfo_advertiser
+                                - participantInfo_address1
+                                - participantInfo_website
+                          - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+                          - name: keyword
+                            in: query
+                            required: false
+                            schema:
+                              type: string
+                            description: keyword for search
+                            example: OCN
+                            default: null
+                        responses:
+                          "200":
+                            description: successful operation
+                            headers:
+                              content-encoding:
+                                description: compression
+                                schema:
+                                  type: string
+                                  default: gzip
+                                  example: gzip
+                            content:
+                              application/json:
+                                schema:
+                                  $ref: "./../common/schemas.yaml#/components/schemas/Page"
+                                  properties:
+                                    data:
+                                      type: array
+                                      items:
+                                        $ref: "schemas.yaml#/components/schemas/ParticipantInfo"
+platforms:
+  get:
+    summary: Returns a list of participants
+    tags:
+      - participant
+    parameters:
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: participantInfo_id
+          example: participantInfo_id
+          enum:
+            - participantInfo_name
+            - participantInfo_id
+            - participantInfo_publisher
+            - participantInfo_platform
+            - participantInfo_agency
+            - participantInfo_advertiser
+            - participantInfo_address1
+            - participantInfo_website
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+        description: keyword for search
+        example: OCN
+        default: null
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "./../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "schemas.yaml#/components/schemas/ParticipantInfo"
+adAgencies:
+  get:
+    summary: Returns a list of participants
+    tags:
+      - participant
+    parameters:
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: participantInfo_id
+          example: participantInfo_id
+          enum:
+            - participantInfo_name
+            - participantInfo_id
+            - participantInfo_publisher
+            - participantInfo_platform
+            - participantInfo_agency
+            - participantInfo_advertiser
+            - participantInfo_address1
+            - participantInfo_website
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+        description: keyword for search
+        example: OCN
+        default: null
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "./../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "schemas.yaml#/components/schemas/ParticipantInfo"
+advertisers:
+  get:
+    summary: Returns a list of participants
+    tags:
+      - participant
+    parameters:
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: participantInfo_id
+          example: participantInfo_id
+          enum:
+            - participantInfo_name
+            - participantInfo_id
+            - participantInfo_publisher
+            - participantInfo_platform
+            - participantInfo_agency
+            - participantInfo_advertiser
+            - participantInfo_address1
+            - participantInfo_website
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+        description: keyword for search
+        example: OCN
+        default: null
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "./../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "schemas.yaml#/components/schemas/ParticipantInfo"
+publisherTags:
+  get:
+    summary: Returns a simple list of publisher
+    tags:
+      - participant
+    parameters:
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+        description: keyword for search
+        example: OCN
+        default: null
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "schemas.yaml#/components/schemas/ParticipantTag"
+adAgencyTags:
+  get:
+    summary: Returns a simple list of adAgency
+    tags:
+      - participant
+    parameters:
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+        description: keyword for search
+        example: OCN
+        default: null
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "schemas.yaml#/components/schemas/ParticipantTag"
+platformTags:
+  get:
+    summary: Returns a simple list of platform
+    tags:
+      - participant
+    parameters:
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+        description: keyword for search
+        example: OCN
+        default: null
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "schemas.yaml#/components/schemas/ParticipantTag"
+advertiserTags:
+  get:
+    summary: Returns a simple list of advertiser
+    tags:
+      - participant
+    parameters:
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+        description: keyword for search
+        example: OCN
+        default: null
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "schemas.yaml#/components/schemas/ParticipantTag"
+members:
+  get:
+    tags:
+      - member
+    summary: Get MemberList
+    operationId: members
+    parameters:
+      - name: id
+        in: path
+        required: false
+        schema:
+          type: integer
+          format: int32
+        default: null
+        example: 1
+        description: participant id which identify members belong to it so that user can iterate members.
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items: '../member/schemas.yaml#/components/schemas/MemberSummary'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Member Data not found
+id:
+  get:
+    summary: Returns a participant
+    tags:
+      - participant
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: withMembers
+        in: query
+        required: false
+        schema:
+          type: boolean
+    responses:
+      '200':
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/components/schemas/ParticipantInfo"
+#          content:
+#            application/json:
+#              schema:
+#                $ref: "schemas.yaml#/components/schemas/Participant/properties"
+  put:
+    summary: Updates a participant
+    tags:
+      - participant
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+    requestBody:
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/ParticipantUpdateForm"
+    responses:
+      "200":
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+  delete:
+    summary: Deletes a participant
+    tags:
+      - participant
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      "200":
+        description: successful operation
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string

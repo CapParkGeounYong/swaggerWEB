@@ -1,0 +1,37 @@
+components:
+  schemas:
+    CueRecord:
+      type: object
+      properties:
+        startedAt:
+          type: string
+          format: date-time
+          nullable: false
+        durationInMs:
+          type: integer
+          format: int32
+          nullable: false
+          default: 120000
+        skipped:
+          type: boolean
+          nullable: false
+          default: false
+          example: false
+    CueHistoryResponse:
+      type: object
+      properties:
+        contentId:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 1
+        contentName:
+          type: string
+          nullable: false
+          default: ''
+          example: 'JTBC'
+        cueRecords:
+          type: array
+          items:
+            $ref: "#/components/schemas/CueRecord"

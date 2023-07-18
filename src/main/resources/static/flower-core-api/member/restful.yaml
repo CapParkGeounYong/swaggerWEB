@@ -1,0 +1,414 @@
+members:
+  get:
+    tags:
+      - member
+    summary: Get MemberList
+    operationId: members
+    parameters:
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: memberSummary_id
+          example: memberSummary_id
+          enum:
+            - memberSummary_id
+            - memberSummary_name
+            - memberSummary_email
+            - memberSummary_account
+            - memberSummary_mobile
+            - memberSummary_status
+            - memberRole_id
+            - memberRole_name
+            - memberParticipant_id
+            - memberParticipant_name
+            - memberSummary_createdAt
+            - parentMember_id
+            - parentMember_name
+            - parentMember_account
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+        description: keyword for search
+        example: keyword
+        default: keyword
+      - name: participantId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+        default: null
+        example: 1
+      - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+          example: NORMAL
+          enum:
+            - NORMAL
+            - EXPIRED
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items: 'schemas.yaml#/components/schemas/MemberSummary'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Member Data not found
+  post:
+    tags:
+      - member
+    summary: create Member
+    operationId: create
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/MemberCreateForm"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/MemberDto'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Member Data not found
+permissionsToAdd:
+  get:
+    tags:
+      - member
+    summary: Get MemberList
+    operationId: members
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "schemas.yaml#/components/schemas/MemberPermission"
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Member Data not found
+permissionsToRemove:
+  get:
+    tags:
+      - member
+    summary: Get MemberList
+    operationId: members
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "schemas.yaml#/components/schemas/MemberPermission"
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Member Data not found
+getOne:
+  put:
+    tags:
+      - member
+    summary: Update Member Details by ID
+    parameters:
+      - name: id
+        in: path
+        description: 'For testing. Use 1'
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: 'schemas.yaml#/components/schemas/MemberUpdateForm'
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+  get:
+    tags:
+      - member
+    summary: Get Member Details by ID
+    operationId: memberBy
+    parameters:
+      - name: id
+        in: path
+        description: 'For testing. Use 1'
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/MemberDto'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+status:
+  put:
+    tags:
+      - member
+    summary: Member Status Change by ID
+    operationId: updateStatus
+    parameters:
+      - name: id
+        in: path
+        description: 'Change the Members subscription / withdrawal status.'
+        required: true
+        schema:
+          type: string
+      - name: newStatus
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+            - NORMAL
+            - EXPIRED
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/MemberDto'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+password:
+  put:
+    tags:
+      - member
+    summary: Member Password Change by ID
+    operationId: updatePassword
+    parameters:
+      - name: id
+        in: path
+        description: 'Change Members password'
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/PasswordChange"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: boolean
+              default: true
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+password-reset:
+  put:
+    tags:
+      - member
+    summary: Reset Member Password by ID
+    operationId: initPassword
+    parameters:
+      - name: id
+        in: path
+        description: 'Reset Member Password to ID'
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: boolean
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+
+#  delete:
+#    tags:
+#      - member
+#    summary: Delete Member by ID
+#    operationId: delete
+#    parameters:
+#      - name: id
+#        in: path
+#        description: 'Delete member '
+#        required: true
+#        schema:
+#          type: string
+#    responses:
+#      '200':
+#        description: successful operation
+#        headers:
+#          content-encoding:
+#            description: compression
+#            schema:
+#              type: string
+#              default: gzip
+#              example: gzip
+#        content:
+#          application/json:
+#            schema:
+#              $ref: 'schemas.yaml#/components/schemas/Member'
+#      '400':
+#        description: Invalid id supplied
+#      '404':
+#        description: Sample Data not found
+
+permission:
+  put:
+    tags:
+      - member
+    summary: Change Member's Permission
+    operationId: updateMember
+    parameters:
+      - name: id
+        in: path
+        description: member id
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: permissionId
+        in: query
+        description: permission id to be updated to the member
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: boolean
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: MemberPermission not found

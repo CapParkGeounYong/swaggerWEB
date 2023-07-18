@@ -1,0 +1,65 @@
+config:
+  get:
+    tags:
+      - config
+    summary: Get Config Value
+    operationId: fetch-config-value
+    parameters:
+      - name: key
+        in: path
+        description: name of category to use
+        required: true
+        schema:
+          $ref: "schemas.yaml#/components/schemas/ConstantsKey"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/text:
+            schema:
+              type: string
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found
+  put:
+    tags:
+      - system-category
+    summary: Update Config Value
+    operationId: system-categories-config-update
+    parameters:
+      - name: key
+        in: path
+        description: name of category to use
+        required: true
+        schema:
+          $ref: "schemas.yaml#/components/schemas/ConstantsKey"
+      - name: value
+        in: query
+        description: value to be updated
+        required: true
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: boolean
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found

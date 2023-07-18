@@ -1,0 +1,159 @@
+list:
+  get:
+    tags:
+      - placement-review
+    summary: Get PlacementReview page
+    operationId: placementReviews
+    parameters:
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+            - placementReviewPageResponse_id
+            - placementReviewPageResponse_createdAt
+            - placementReviewPageResponse_creativeType
+            - placementReviewPageResponse_placementName
+            - placementReviewPageResponse_publisherId
+            - placementReviewPageResponse_publisherName
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+      - name: publisherId
+        in: query
+        required: true
+        type: integer
+        format: int64
+        description: publisher Id
+        example: 1
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/PlacementReviewPageResponse'
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found
+
+historyList:
+  get:
+    tags:
+      - placement-review-history
+    summary: Fetch placement reviews by a placement id
+    operationId: fetchAllBy
+    parameters:
+      - name: publisherId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "./../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "schemas.yaml#/components/schemas/PlacementReviewHistoryListDto"
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found
+process:
+  get:
+    tags:
+      - placement-review
+    summary: Fetch placement review process
+    operationId: process
+    parameters:
+      - name: placementId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/ReviewProcess"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found
+id:
+  patch:
+    tags:
+      - placement-review
+      - decision-review
+    summary: Approve or deny placement review
+    operationId: decisionPlacementReview
+    parameters:
+      - name: placementId
+        in: path
+        description: 'id of placement'
+        required: true
+        schema:
+          type: string
+      - name: participantId
+        in: query
+        description: 'id of participant'
+        required: true
+        schema:
+          type: string
+      - $ref: "../common/schemas.yaml#/components/parameters/decision"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/ReasonForRejection"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found

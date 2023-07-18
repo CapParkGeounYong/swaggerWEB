@@ -1,0 +1,69 @@
+login:
+  get:
+    tags:
+      - home
+    summary: Login
+    operationId: login
+    parameters:
+      - name: username
+        in: query
+        description: 'member.account'
+        required: true
+        schema:
+          type: string
+      - name: password
+        in: query
+        description: 'member.password'
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: login successful
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+          Set-Cookie:
+            type: string
+            description: "eg. ff-token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjY5MDY2MzQ1LCJ1c2VyIjoiZXlKbGJtTWlPaUpCTVRJNFEwSkRMVWhUTWpVMklpd2lZV3huSWpvaVpHbHlJbjAuLnFVMDk1d1g2dko2c0U4Z0FZSXRidHcuRV8yR0dNTVR3NGtnSkRSaXB4amZReTJnYk5fVUswWVBER2JscGJGQkp1MDV2Vzh1dTNHLVBFN0hGQzBPemRMQlZ2VE1FZk1HSjlwb3E1WUVBTDFQclczOF9YSTh2dTBPQWg1MkU4RktkYWNoMXFSTmlXb2xzaU1KV1JEVEc1Sm1zeGlQUjFLYV9oRTR4UmxVd1pRbFJ1ZW9xcE1QZDFYNmQ0MGhGZS1BODh3LmNnSTA4ZGdCLTdwOE9jREtmRFRSOVEifQ.PD_ydzp5Pb714aFhUuXe7xrxqyCLjX4Hs2_obsV-dUE"
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/components/schemas/LoginUserInfo"
+      '401':
+        description: Unauthorized
+session:
+  post:
+    tags:
+      - home
+    summary: Login
+    operationId: login
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/Authentication"
+    responses:
+      '200':
+        description: login successful
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+          Set-Cookie:
+            type: string
+            description: "eg. ff-token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNjY5MDY2MzQ1LCJ1c2VyIjoiZXlKbGJtTWlPaUpCTVRJNFEwSkRMVWhUTWpVMklpd2lZV3huSWpvaVpHbHlJbjAuLnFVMDk1d1g2dko2c0U4Z0FZSXRidHcuRV8yR0dNTVR3NGtnSkRSaXB4amZReTJnYk5fVUswWVBER2JscGJGQkp1MDV2Vzh1dTNHLVBFN0hGQzBPemRMQlZ2VE1FZk1HSjlwb3E1WUVBTDFQclczOF9YSTh2dTBPQWg1MkU4RktkYWNoMXFSTmlXb2xzaU1KV1JEVEc1Sm1zeGlQUjFLYV9oRTR4UmxVd1pRbFJ1ZW9xcE1QZDFYNmQ0MGhGZS1BODh3LmNnSTA4ZGdCLTdwOE9jREtmRFRSOVEifQ.PD_ydzp5Pb714aFhUuXe7xrxqyCLjX4Hs2_obsV-dUE"
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/components/schemas/LoginUserInfo"
+      '401':
+        description: Unauthorized

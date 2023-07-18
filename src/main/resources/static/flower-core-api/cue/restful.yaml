@@ -1,0 +1,49 @@
+list:
+  get:
+    tags:
+      - cue
+    summary: Get Cue
+    operationId: cues
+    parameters:
+      - name: baseDate
+        in: query
+        description: 기준일
+        required: true
+        schema:
+          type: string
+          format: date
+          example: 2022-11-09
+      - name: publisherId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          example: 1
+      - name: contentId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+          example: 1
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/CueHistoryResponse'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Member Data not found

@@ -1,0 +1,141 @@
+components:
+  schemas:
+    Platform:
+      allOf:
+        - $ref: "../publisher/schemas.yaml#/components/schemas/Publisher"
+        - type: object
+    PlatformCommission:
+      type: object
+      properties:
+        defaultRate:
+          type: number
+          format: double
+          default: 0.0
+          example: 1.0
+          nullable: false
+    PlatformListResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          default: 0
+          example: 1
+          nullable: false
+        name:
+          type: string
+          example: 'name'
+          nullable: false
+    CdnState:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          required: true
+          nullable: false
+          default: 0
+          example: 1
+        used:
+          type: boolean
+          required: true
+          nullable: false
+          default: true
+          example: true
+    CdnResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          required: true
+          nullable: false
+          example: 1
+        name:
+          type: string
+          required: true
+          nullable: false
+          example: 'SAMPLE CDN 1'
+        cdnType:
+          type: string
+          required: true
+          nullable: false
+          default: 'NORMAL'
+          example: 'NORMAL'
+        host:
+          type: string
+          required: true
+          nullable: false
+          example: '127.0.0.1'
+        totalUploadBps:
+          type: integer
+          format: int64
+          required: true
+          nullable: false
+          default: 10000000000
+          example: 10000000000
+        active:
+          type: boolean
+          required: true
+          nullable: false
+          default: true
+          example: true
+        used:
+          type: boolean
+          required: true
+          nullable: false
+          default: true
+          example: true
+        latestCheckedAt:
+          type: string
+          format: date-time
+          example: '2022-12-27T12:38:36Z'
+    DeviceDetailResponse:
+      type: object
+      properties:
+        platformName:
+          type: string
+          required: true
+          nullable: false
+          default: ''
+          example: 'SK Broadband'
+        deviceType:
+          type: string
+          required: true
+          nullable: false
+          default: ''
+          example: 'skb smart(BHX-S100, BKO-S200)'
+        downloadPath:
+          type: string
+          required: true
+          nullable: false
+          default: ''
+          example: '/sdcard/.DATA/amg/assets/'
+        usableStorageInByte:
+          type: integer
+          format: int64
+          example: 314572800
+        downloadLimit:
+          type: integer
+          format: int32
+          example: 153600
+        playType:
+          type: string
+          enum:
+            - Downloading
+            - Streaming
+          required: true
+          nullable: false
+          default: 'Downloading'
+          example: 'Downloading'
+        assetProfiles:
+          type: string
+          example: 'TS-1080p-quality-4,TS-1080p-BTV-legacy-bitrate8000'
+    PlatformAttributes:
+      type: object
+      properties:
+        availableAdTriggerTypes:
+          type: array
+          items:
+            type: "string"
+

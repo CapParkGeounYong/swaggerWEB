@@ -1,0 +1,806 @@
+components:
+  parameters:
+    campaignId:
+      name: campaignId
+      in: path
+      description: campaignId
+      schema:
+        type: integer
+        format: int64
+        example: 1
+    adIds:
+      name: adIds
+      in: query
+      description: One or more adIds. separator is '|'.
+      required: false
+      schema:
+        type: string
+        example: 1|2|3
+    startDate:
+      name: startDate
+      in: query
+      description: 시작일
+      required: true
+      schema:
+        type: string
+        format: date
+        example: 2022-11-09
+    endDate:
+      name: endDate
+      in: query
+      description: 종료일
+      required: true
+      schema:
+        type: string
+        format: date
+        example: 2022-11-09
+    regionId:
+      name: regionId
+      in: query
+      description: 지역 id
+      required: false
+      schema:
+        type: integer
+        format: int64
+        example: 1
+    regionLevel:
+      name: regionLevel
+      in: query
+      description: 요청 지역 레벨
+      required: false
+      schema:
+        type: integer
+        format: int32
+        example: 0
+    audienceType:
+      name: type
+      in: path
+      description: campaign audience analytics type
+      required: true
+      schema:
+        type: string
+        enum:
+          - MOBILE
+          - TARGETING
+    packageName:
+      name: packageName
+      in: query
+      description: 전환분석 패키지
+      required: true
+      schema:
+        type: string
+        example: 'com.app.balaan.balaanboutique'
+  schemas:
+    LongDateSeries:
+      type: object
+      properties:
+        date:
+          type: string
+          format: date
+          example: '2022-11-09'
+        value:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 1000
+    CampaignAnalyticsTimeSeriesTimeUnit:
+      type: string
+      enum:
+        - DAY
+        - HOUR
+        - WEEK
+        - MONTH
+    CampaignAnalyticsUnit:
+      type: string
+      enum:
+        - SUMS
+        - DAILY
+    GuaranteeType:
+      type: string
+      enum:
+        - IMPRESSION
+        - VIEW
+      default: IMPRESSION
+      example: IMPRESSION
+      description: 보장기준
+    CampaignAnalyticsOverviewResponse:
+      type: object
+      properties:
+        total:
+          type: object
+          properties:
+            elapsedRate:
+              type: object
+              properties:
+                valueInPercent:
+                  type: number
+                  format: double
+                  example: 75.94
+                  nullable: false
+                  default: 0.00
+                totalDays:
+                  type: integer
+                  format: int32
+                  example: 78
+                  nullable: false
+                  default: 0
+                elapsedDays:
+                  type: integer
+                  format: int32
+                  example: 27
+                  nullable: false
+                  default: 0
+            achievementRate:
+              type: object
+              properties:
+                valueInPercent:
+                  type: number
+                  format: double
+                  example: 63.10
+                  nullable: false
+                  default: 0.00
+                guaranteedImpression:
+                  type: integer
+                  format: int64
+                  example: 71067
+                  nullable: false
+                  default: 0
+                completeImpression:
+                  type: integer
+                  format: int64
+                  example: 80849
+                  nullable: false
+                  default: 0
+            progressRate:
+              type: object
+              properties:
+                valueInPercent:
+                  type: number
+                  format: double
+                  example: 63.11
+                  nullable: false
+                  default: 0.00
+                elapsedRateInPercent:
+                  type: number
+                  format: double
+                  example: 75.94
+                  nullable: false
+                  default: 0.00
+                achievementRateInPercent:
+                  type: number
+                  format: double
+                  example: 63.10
+                  nullable: false
+                  default: 0.00
+        impressionChart:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: '2022-11-09'
+                nullabel: false
+                default: ''
+              guaranteedImpression:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+                example: 1000
+              completedImpression:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+                example: 1000
+        progressRateChart:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: '2022-11-09'
+                nullabel: false
+                default: ''
+              value:
+                type: number
+                format: double
+                nullable: false
+                default: 0.0
+                example: 40.05
+        adTable:
+          type: array
+          items:
+            type: object
+            properties:
+              adId:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+                example: 1
+              adName:
+                type: string
+                nullable: false
+                default: ''
+                example: 광고#0
+              startDate:
+                type: string
+                format: date
+                example: '2022-10-01'
+              endDate:
+                type: string
+                format: date
+                example: '2022-11-30'
+              guaranteeType:
+                $ref: "#/components/schemas/GuaranteeType"
+              guaranteedAmount:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+                example: 1000
+              view:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+                example: 1000
+              impression:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+                example: 1000
+              achievementRateInPercent:
+                type: number
+                format: double
+                example: 63.10
+                nullable: false
+                default: 0.00
+              progressRateInPercent:
+                type: number
+                format: double
+                example: 63.10
+                nullable: false
+                default: 0.00
+              view1Q:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+              view2Q:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+              view3Q:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+              clickCount:
+                type: integer
+                format: int64
+                nullable: false
+                example: 1000
+                default: 0
+    CampaignAnalyticsTimeSeriesResponse:
+      type: object
+      properties:
+        chart:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: '2022-11-09'
+                nullable: false
+                default: ''
+              guaranteedValue:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+              clickedValue:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+              impression:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+              view:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+        dataTable:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: '2022-11-09'
+                nullable: false
+                default: ''
+              guaranteedImpression:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+              guaranteedView:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+              impression:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+              view:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+              click:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+              hourlyImpression:
+                type: array
+                items:
+                  type: integer
+                  format: int64
+                  example: 1000
+              hourlyView:
+                type: array
+                items:
+                  type: integer
+                  format: int64
+                  example: 1000
+              achievementRateInPercent:
+                type: number
+                format: double
+                example: 63.10
+                nullable: false
+                default: 0.00
+              progressRateInPercent:
+                type: number
+                format: double
+                example: 63.10
+                nullable: false
+                default: 0.00
+    CampaignAnalyticsContentResponse:
+      type: object
+      properties:
+        chart:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: 'MBC or 2022-11-09'
+                nullable: false
+                default: ''
+              impression:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+              view:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+        dataTable:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+              label:
+                type: string
+                example: 'MBC'
+                nullable: false
+                default: ''
+              dailyImpression:
+                type: array
+                items:
+                  type: integer
+                  format: int64
+                  example: 1000
+                  nullable: false
+                  default: 0
+              dailyView:
+                type: array
+                items:
+                  type: integer
+                  format: int64
+                  example: 1000
+                  nullable: false
+                  default: 0
+              impression:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+              view:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+        dates:
+          type: array
+          items:
+            type: string
+            example: "['2022-11-09', '2022-11-10']"
+    CampaignAnalyticsRegionResponse:
+      type: object
+      properties:
+        chart:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: '서울특별시'
+                nullable: false
+                default: ''
+              impression:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+              view:
+                type: integer
+                format: int64
+                nullable: false
+                default: 0
+        dataTable:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+              label:
+                type: string
+                example: '서울특별시 or 2022-11-09'
+                nullable: false
+                default: ''
+              dailyImpression:
+                type: array
+                items:
+                  type: integer
+                  format: int64
+                  example: 1000
+                  nullable: false
+                  default: 0
+              dailyView:
+                type: array
+                items:
+                  type: integer
+                  format: int64
+                  example: 1000
+              impression:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+              view:
+                type: integer
+                format: int64
+                example: 1000
+                nullable: false
+                default: 0
+              hasChild:
+                type: boolean
+                example: true
+                nullable: false
+                default: false
+        dates:
+          type: array
+          items:
+            type: string
+            example: "['2022-11-09', '2022-11-10']"
+    CampaignAnalyticsRealTimeData:
+      type: object
+      properties:
+        campaign:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 999999
+        statsDate:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+          example: 20221117
+        statsHour:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+          example: 23
+        totalComplete:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 999
+        totalInventory:
+          type: number
+          format: double
+          nullable: false
+          default: 0.0
+          example: 3000
+        totalImpression:
+          type: integer
+          format: int64
+          default: 0
+          example: 3000
+        totalValidImpression:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 3000
+    CampaignAnalyticsAudienceResponse:
+      type: object
+      properties:
+        exposure:
+          type: array
+          items:
+            $ref: "#/components/schemas/CampaignAudienceValue"
+        relativeTotal:
+          type: array
+          items:
+            $ref: "#/components/schemas/CampaignAudienceValue"
+        relativeDaily:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: "2022-11-09"
+              values:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CampaignAudienceValue"
+        gender:
+          type: array
+          items:
+            $ref: "#/components/schemas/CampaignAudienceValue"
+        age:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: "10대"
+              values:
+                type: array
+                items:
+                  $ref: "#/components/schemas/CampaignAudienceValue"
+        asset:
+          type: array
+          items:
+            $ref: "#/components/schemas/CampaignAudienceValue"
+        persona:
+          type: array
+          items:
+            $ref: "#/components/schemas/CampaignAudienceValue"
+        top10Persona:
+          type: array
+          items:
+            $ref: "#/components/schemas/CampaignAudienceValue"
+    CampaignAudienceValue:
+      type: object
+      properties:
+        label:
+          type: string
+          example: "persona"
+        value:
+          type: number
+          format: double
+          example: 50.5
+    CampaignAnalyticsMediaResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 1
+    CampaignAnalyticsReachResponse:
+      type: object
+      properties:
+        label:
+          type: string
+          example: '2022-11-09'
+          nullable: false
+          default: '2022-11-09'
+        applicationDays:
+          type: integer
+          format: int32
+          required: false
+          example: 1
+        dailyUh:
+          type: integer
+          format: int64
+          required: false
+          example: 1
+        reach1:
+          type: integer
+          format: int64
+          required: false
+          example: 1
+        reach2:
+          type: integer
+          format: int64
+          required: false
+          example: 1
+        reach3:
+          type: integer
+          format: int64
+          required: false
+          example: 1
+        frequency:
+          type: number
+          format: float
+          required: false
+          example: 1
+        impression:
+          type: integer
+          format: int64
+          required: false
+          example: 1
+        view:
+          type: integer
+          format: int64
+          required: false
+          example: 1
+    CampaignAnalyticsConversionResponse:
+      type: object
+      properties:
+        summary:
+          type: object
+          $ref: "#/components/schemas/CampaignAnalyticsConversionSummary"
+        daily:
+          type: array
+          items:
+            $ref: "#/components/schemas/CampaignAnalyticsConversionDaily"
+        reach:
+          type: object
+          $ref: "#/components/schemas/CampaignAnalyticsConversionReach"
+    CampaignAnalyticsConversionSummary:
+      type: object
+      properties:
+        period:
+          type: string
+          example: '2022-09-10 ~ 2022-09-30'
+        installationAccreditationStandards:
+          type: string
+          example: '2022-10-15'
+        useAccreditationStandards:
+          type: string
+          example: '2022-10-08'
+        totalInstallCount:
+          type: integer
+          format: int64
+          example: 5447
+        averageUsePerMinute:
+          type: number
+          format: double
+          example: 203.34757093806437
+    CampaignAnalyticsConversionDaily:
+      type: object
+      properties:
+        label:
+          type: string
+          example: 2022-09-10
+        installCount:
+          type: integer
+          format: int64
+          example: 123456
+        appUsageUserCount:
+          type: integer
+          format: int64
+          example: 123456
+        averageUsagePerMinute:
+          type: number
+          format: double
+          example: 34.56
+    CampaignAnalyticsConversionReach:
+      type: object
+      properties:
+        accumulation:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: Reach 1+
+              installCount:
+                type: integer
+                format: int64
+                example: 123456
+              averageUsagePerMinute:
+                type: number
+                format: double
+                example: 23.45
+        daily:
+          type: array
+          items:
+            type: object
+            properties:
+              label:
+                type: string
+                example: '2022-12-01'
+              reach1:
+                type: integer
+                format: int64
+              reach2:
+                type: integer
+                format: int64
+              reach3:
+                type: integer
+                format: int64
+              reach4:
+                type: integer
+                format: int64
+              reach5:
+                type: integer
+                format: int64
+              reach6:
+                type: integer
+                format: int64
+              reach7:
+                type: integer
+                format: int64
+              reach8:
+                type: integer
+                format: int64
+              reach9:
+                type: integer
+                format: int64
+              reach10:
+                type: integer
+                format: int64

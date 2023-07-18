@@ -1,0 +1,117 @@
+creativeReviews:
+  get:
+    tags:
+      - creative-review
+    summary: Get PlacementReview page
+    operationId: placementReviews
+    parameters:
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+            - placementReviewPageResponse_id
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+      - name: participantId
+        in: query
+        required: false
+        type: integer
+        format: int64
+        nullable: true
+        description: participant Id
+        example: 1
+      - name: category
+        in: query
+        required: false
+        description: null - all
+        schema:
+          type: string
+          $ref: '../creative/schemas.yaml#/components/schemas/Category'
+        default: null
+      - name: keyword
+        in: query
+        required: false
+        type: string
+        example: sample
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/CreativeReviewPageResponse'
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found
+review:
+  patch:
+    tags:
+      - creative-review
+      - decision-reviews
+    summary: Approve or deny creative review
+    operationId: decisionCreativeReview
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/CreativeReviewDecisions"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found
+historyList:
+  get:
+    tags:
+      - creative-review
+    summary: Fetch creative reviews by a campaign id
+    operationId: fetchAllCreativeReviewHistoryBy
+    parameters:
+      - name: campaignId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "schemas.yaml#/components/schemas/CreativeReviewHistoriesPerCreative"
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found

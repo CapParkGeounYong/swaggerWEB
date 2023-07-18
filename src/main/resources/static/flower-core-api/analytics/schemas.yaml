@@ -1,0 +1,233 @@
+components:
+  parameters:
+    publisherId:
+      name: publisherId
+      in: query
+      description: 퍼블리셔 ID
+      required: false
+      schema:
+        type: integer
+        format: int64
+        example: 1
+    platformId:
+      name: platformId
+      in: query
+      description: 플랫폼 ID
+      required: false
+      schema:
+        type: integer
+        format: int64
+        example: 1
+    contentType:
+      name: contentType
+      in: query
+      description: 광고 유형
+      required: false
+      schema:
+        type: string
+        enum:
+          - LINEAR_VIDEO
+          - DISPLAY
+          - VOD
+    startDate:
+      name: startDate
+      in: query
+      description: 시작일
+      required: true
+      schema:
+        type: string
+        format: date
+        example: 2022-11-09
+    endDate:
+      name: endDate
+      in: query
+      description: 종료일
+      required: true
+      schema:
+        type: string
+        format: date
+        example: 2022-11-09
+    excludeEndingCampaign:
+      name: excludeEndingCampaign
+      in: query
+      required: true
+      default: true
+      schema:
+        type: boolean
+  schemas:
+    AnalyticsPivotMatrix:
+      type: string
+      enum:
+        - CONTENT
+        - REGION
+        - HOURLY
+        - DAILY
+        - WEEKLY
+        - MONTHLY
+        - DAY_OF_WEEK
+        - NONE
+    AnalyticsPivotIndicator:
+      type: string
+      enum:
+        - INVENTORIES
+        - PAID_INVENTORIES
+        - IMPRESSIONS
+        - VIEWS
+        - UH
+    AnalyticsRow:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 1
+        label:
+          type: string
+          nullable: false
+          default: ''
+          example: 2022-01-01~2022-01-10
+        totalInventory:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 1
+        paidInventory:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 1
+        salesRate:
+          type: number
+          format: double
+          nullable: false
+          default: 0.0
+          example: 12.34
+        impressions:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 1
+        views:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 1
+        viewRate:
+          type: number
+          format: double
+          nullable: false
+          default: 0.0
+          example: 12.34
+        totalCueCount:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 1
+        totalCueTimeInSec:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+          example: 1
+        hasChild:
+          type: boolean
+          example: true
+          nullable: false
+          default: false
+        regionLevel:
+          type: integer
+          format: int32
+    AnalyticsDayOfWeeksRow:
+      type: object
+      properties:
+        label:
+          type: string
+          nullable: false
+          default: ''
+          example: 2022-01-01~2022-01-10
+        inventory:
+          type: array
+          items:
+            type: integer
+            format: int64
+        paidInventory:
+          type: array
+          items:
+            type: integer
+            format: int64
+        impression:
+          type: array
+          items:
+            type: integer
+            format: int64
+        view:
+          type: array
+          items:
+            type: integer
+            format: int64
+    AnalysisViewType:
+      type: string
+      enum:
+        - CONTENT
+        - REGION
+    AnalysisTimeType:
+      type: string
+      enum:
+        - DAILY
+        - HOURLY
+        - WEEKLY
+        - MONTHLY
+        - DAY_OF_WEEK
+    AnalysisDataType:
+      type: string
+      enum:
+        - INVENTORY
+        - PAID_INVENTORY
+        - IMPRESSIONS
+        - VIEWS
+    AnalyticsByDayOfWeekPerHourResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 12
+    AnalyticsContentSummaryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 13
+    AnalyticsRegionSummaryResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 14
+    AnalyticsPivotResponse:
+      type: object
+      properties:
+        row:
+          type: array
+          items:
+            type: string
+        col:
+          type: array
+          items:
+            type: string
+        value:
+          type: array
+          items:
+            type: array
+            items:
+              type: string
+

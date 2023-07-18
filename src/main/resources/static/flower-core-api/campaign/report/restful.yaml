@@ -1,0 +1,50 @@
+report:
+  get:
+    tags:
+      - campaign-analytics-report
+    summary: fetch report of campaign
+    operationId: fetchCampaignAnalyticsReport
+    parameters:
+      - $ref: "schemas.yaml#/components/parameters/campaignId"
+      - $ref: "schemas.yaml#/components/parameters/adIds"
+      - $ref: "schemas.yaml#/components/parameters/startDate"
+      - $ref: "schemas.yaml#/components/parameters/endDate"
+      - $ref: "schemas.yaml#/components/parameters/reportType"
+      - $ref: "schemas.yaml#/components/parameters/emails"
+    responses:
+      '200':
+        description: successful operation and result will be sent to emails
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+      '400':
+        description: Invalid parameters supplied
+      '404':
+        description: analytics not found
+conversionReport:
+  get:
+    tags:
+      - campaign-conversion-report
+    summary: fetch conversion report of campaign
+    operationId: fetchCampaignConversionReport
+    parameters:
+      - $ref: "schemas.yaml#/components/parameters/campaignId"
+      - $ref: "schemas.yaml#/components/parameters/packageName"
+    responses:
+      '200':
+        description: successful operation then get xlsx conversion result
+        headers:
+          content-type:
+            description: content type
+            schema:
+              type: string
+              default: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+              example: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet
+      '400':
+        description: Invalid parameters supplied
+      '404':
+        description: analytics not found

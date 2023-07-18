@@ -1,0 +1,307 @@
+fetchOne:
+  get:
+    tags:
+      - platform
+    summary: Get Platform by ID
+    operationId: findBy
+    parameters:
+      - name: id
+        in: path
+        description: 'find platform info'
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/Platform'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+commission:
+  patch:
+    tags:
+      - platform
+    summary: Update Platform Commission
+    operationId: update
+    parameters:
+      - name: id
+        in: path
+        description: 'platform id'
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: replaceCommission
+        in: query
+        description: 'value to replace default commission'
+        required: true
+        schema:
+          type: number
+          format: double
+          example: 3.2
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: "schemas.yaml#/components/schemas/PlatformCommission"
+  get:
+    summary: Returns commission of a platform
+    tags:
+      - platform
+    parameters:
+      - name: id
+        in: path
+        description: 'platform id'
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: object
+              items:
+                $ref: "schemas.yaml#/components/schemas/PlatformCommission"
+list:
+  get:
+    summary: Returns commission of a platform
+    tags:
+      - platform
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "schemas.yaml#/components/schemas/PlatformListResponse"
+cdnList:
+  get:
+    summary: Fetch cdn list of a platform
+    operationId: fetchAllCdn
+    tags:
+      - platform
+      - platform-cdn-ui
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int64
+        description: Platform Id
+        example: 1
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: cdnResponse_id
+          example: cdnResponse_id
+          enum:
+            - cdnResponse_id
+            - cdnResponse_name
+            - cdnResponse_cdnType
+            - cdnResponse_host
+            - cdnResponse_totalUploadBps
+            - cdnResponse_active
+            - cdnResponse_used
+            - cdnResponse_latestCheckedAt
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "schemas.yaml#/components/schemas/CdnResponse"
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Cdn Data not found
+  patch:
+    summary: Update cdn used status
+    operationId: updateCdn
+    tags:
+      - platform
+      - platform-cdn-ui
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int64
+        description: Platform Id
+        example: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/CdnState"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: "schemas.yaml#/components/schemas/CdnResponse"
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Cdn Data not found
+deviceDetailList:
+  get:
+    summary: Fetch device detail list of a platform
+    operationId: fetchAllDeviceDetail
+    tags:
+      - platform
+      - platform-device-detail-ui
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int64
+        description: Platform Id
+        example: 1
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: deviceDetailResponse_deviceType
+          example: deviceDetailResponse_deviceType
+          enum:
+            - deviceDetailResponse_platformName
+            - deviceDetailResponse_deviceType
+            - deviceDetailResponse_downloadPath
+            - deviceDetailResponse_usableStorageInByte
+            - deviceDetailResponse_downloadLimit
+            - deviceDetailResponse_playType
+            - deviceDetailResponse_assetProfiles
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "schemas.yaml#/components/schemas/DeviceDetailResponse"
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Device detail data not found
+assetProfileList:
+  get:
+    summary: Fetch asset profile list of a platform
+    operationId: fetchAllAssetProfile
+    tags:
+      - platform
+      - platform-device-detail-ui
+    parameters:
+      - name: id
+        in: path
+        required: true
+        type: integer
+        format: int64
+        description: Platform Id
+        example: 1
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../asset-profile/schemas.yaml#/components/schemas/AssetProfile"
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Device detail data not found

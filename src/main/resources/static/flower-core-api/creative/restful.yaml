@@ -1,0 +1,660 @@
+creative:
+  patch:
+    tags:
+      - creative
+      - creative-description-ui
+    operationId: updateCreative
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              participantId:
+                type: integer
+                format: int64
+              name:
+                type: string
+                default: ''
+              description:
+                type: string
+                default: ''
+              clickUrl:
+                type: string
+                default: ''
+              deliberationCode:
+                type: string
+                default: ''
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/CreativeDetail'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+  delete:
+    tags:
+      - creative
+      - creative-description-ui
+    operationId: deleteCreative
+    parameters:
+      - name: id
+        in: path
+        description: 'Delete Creative'
+        schema:
+          type: string
+  get:
+    tags:
+      - creative
+      - campaign-creation-ui
+      - creative-description-ui
+    summary: Get Creative by ID
+    operationId: getCreative
+    parameters:
+      - name: id
+        in: path
+        description: 'For testing. Use 1'
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/CreativeDetail'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+creatives:
+  post:
+    tags:
+      - creative
+      - creative-creation-ui
+    summary: Create a Creative
+    operationId: createCreative
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/CreativeCreation"
+    #            type: object
+    #            properties:
+    #              creative:
+    #                type: object
+    #                properties:
+    #                  name:
+    #                    type: string
+    #                    default: "테스트 소재"
+    #                    maxLength: 255
+    #                  type:
+    #                    type: string
+    #                    default: VIDEO
+    #                    example: VIDEO
+    #                    nullable: false
+    #                    $ref: 'schemas.yaml#/components/schemas/CreativeType'
+    #                  description:
+    #                    type: string
+    #                    default: ""
+    #                    maxLength: 1000
+    #                  storedS3FileId:
+    #                    type: integer
+    #                  clickUrl:
+    #                    type: string
+    #                  ownerParticipantId:
+    #                    type: integer
+    #                    example: 1
+    #              deliberationNumber:
+    #                type: string
+    #                example: 22-TH-09-653
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int32
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+  get:
+    tags:
+      - creative
+      - creative-list-ui
+    summary: Fetch Creative List
+    operationId: getCreatives
+    parameters:
+      - name: keyword
+        in: query
+        description: 'custom search word. search creative name or participant name or createdby or creative id  '
+        required: false
+        schema:
+          type: string
+          example: '15초 현대 신차'
+      - name: status
+        in: query
+        required: false
+        description: creative status
+        schema:
+          type: string
+          $ref: "schemas.yaml#/components/schemas/CreativeAssetStatus"
+      - name: type
+        in: query
+        required: false
+        description: creative type
+        schema:
+          type: string
+          $ref: "schemas.yaml#/components/schemas/CreativeType"
+      - name: deliberation
+        in: query
+        description: 'deliberated or not'
+        required: false
+        schema:
+          type: boolean
+          example: true
+      - name: sourceId
+        in: query
+        required: false
+        description: system category id for creative source
+        example: 1
+        schema:
+          type: integer
+          format: int64
+      - name: standard
+        in: query
+        required: false
+        description: playtime or resolution
+        example: 1920
+        schema:
+          type: string
+      - name: participantId
+        in: query
+        required: false
+        description: owner participant id for creative
+        example: 1
+        schema:
+          type: integer
+          format: int64
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: creativeForList_id
+          enum:
+            - creativeForList_id
+            - creativeForList_createdAt
+            - creativeForList_name
+            - creativeForList_type
+            - creativeForList_status
+            - creativeForList_source
+            - creativeForList_participantName
+            - creativeCreatedBy_account
+            - creativeCreatedBy_name
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items: 'schemas.yaml#/components/schemas/CreativeForList'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+correctedFile:
+  post:
+    tags:
+      - creative
+      - creative-description-ui
+    summary: Upload corrected Creative File
+    operationId: addCorrectedFile
+    parameters:
+      - name: id
+        in: path
+        description: Creative Id
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 1
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              file:
+                type: string
+                format: binary
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/CreativeAttachmentDetail'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+deliberate:
+  patch:
+    tags:
+      - creative
+      - creative-description-ui
+    summary: deliberate
+    operationId: deliberate
+    parameters:
+      - name: id
+        in: path
+        description: Creative Id
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 1
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              confirm:
+                type: boolean
+                default: true
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/CreativeDetail'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+attachments:
+  post:
+    tags:
+      - creative
+      - creative-description-ui
+    summary: Create a Creative
+    operationId: createCreative
+    parameters:
+      - name: id
+        in: path
+        description: Creative Id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              file:
+                type: array
+                items:
+                  type: string
+                  format: binary
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/CreativeAttachmentDetail'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+attachment:
+  delete:
+    tags:
+      - creative
+      - creative-description-ui
+    operationId: deleteAttachments
+    parameters:
+      - name: id
+        in: path
+        description: creative Id
+        schema:
+          type: integer
+          format: int64
+      - name: attachmentId
+        in: path
+        description: creative Attachment Id
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/CreativeAttachmentDetail'
+selectables:
+  get:
+    tags:
+      - creative
+      - campaign-creation-ui
+    summary: Get Participant`s Creative List for campaign Creation
+    operationId: fetchAllByParticipant
+    parameters:
+      - name: participantId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: type
+        in: query
+        required: true
+        description: creative type
+        schema:
+          type: string
+          $ref: "schemas.yaml#/components/schemas/CreativeType"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "schemas.yaml#/components/schemas/CreativeIdName"
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+fallback-assets:
+  get:
+    tags:
+      - creative
+    summary: Get Participant`s Fallback Creative List for placement Creation
+    parameters:
+      - name: publisherId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: type
+        in: query
+        required: true
+        description: creative type
+        schema:
+          type: string
+          $ref: "schemas.yaml#/components/schemas/CreativeType"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "schemas.yaml#/components/schemas/CreativeIdName"
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+encoding:
+  post:
+    tags:
+      - creative
+    summary: request Creative with encoding placements
+    operationId: requestRegularEncoding
+    parameters:
+      - name: id
+        in: path
+        description: Creative Id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: boolean
+
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+distribution:
+  post:
+    tags:
+      - creative
+    summary: request Creative with distribution placements
+    operationId: requestDistribution
+    parameters:
+      - name: id
+        in: path
+        description: Creative Id
+        required: true
+        schema:
+          type: integer
+          format: int64
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              type: integer
+              format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: boolean
+
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+creativeParticipant:
+  post:
+    tags:
+      - creative
+    summary: Find creativeId and participantId by integrationId
+    operationId: getCreativeIdAndParticipantId
+    parameters:
+      - name: integrationId
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: 'schemas.yaml#/components/schemas/CreativeParticipantInfo'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+deviceCreative:
+  get:
+    tags:
+      - creative
+    summary: Search the list of creative that can be set on the device
+    operationId: getDeviceCreative
+    parameters:
+      - name: platformId
+        in: params
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: assetProfileId
+        in: params
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: keyword
+        in: params
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: object
+              $ref: 'schemas.yaml#/components/schemas/DeviceCreativeInfo'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found

@@ -1,0 +1,366 @@
+components:
+  schemas:
+    ProductPage:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: product Id
+          example: 1
+          nullable: false
+        createdAt:
+          type: string
+          format: date-time
+        name:
+          type: string
+          example: product name
+        creativeType:
+          #creativeType 공통으로 사용해야 함
+          $ref: "../creative/schemas.yaml#/components/schemas/CreativeType"
+        creativeAttributes:
+          $ref: "../creative/schemas.yaml#/components/schemas/CreativeAttributes"
+        campaignAvailableFrom:
+          type: string
+          format: date
+        campaignAvailableTo:
+          type: string
+          format: date
+        publishableFrom:
+          type: string
+          format: date
+        publishableTo:
+          type: string
+          format: date
+        price:
+          type: number
+          format: double
+          example: 10.0
+        placementsCount:
+          type: integer
+          format: int64
+          example: 3
+        reviewStatus:
+          $ref: "../review/schemas.yaml#/components/schemas/ReviewChainStatus"
+          nullable: false
+          default: DRAFT
+        participantName:
+          type: string
+    ProductModel:
+      type: object
+      properties:
+        name:
+          type: string
+        creativeType:
+          $ref: "../creative/schemas.yaml#/components/schemas/CreativeType"
+        priceUnit:
+          type: object
+          $ref: "#/components/schemas/ProductPriceUnit"
+        price:
+          type: number
+          format: double
+          default: 10.0
+        campaignAvailableFrom:
+          type: string
+          format: date
+        campaignAvailableTo:
+          type: string
+          format: date
+        publishableFrom:
+          type: string
+          format: date
+        publishableTo:
+          type: string
+          format: date
+        placements:
+          type: array
+          items:
+            $ref: "#/components/schemas/PlacementProduct"
+        constantTargeting:
+          $ref: '../common/schemas.yaml#/components/schemas/ConstantTargetingIdName'
+        timeSlotAdTargetingAllowance:
+          $ref: "#/components/schemas/AdTargetingAllowance"
+        audienceAdTargetingAllowance:
+          $ref: "#/components/schemas/AdTargetingAllowance"
+        regionAdTargetingAllowance:
+          $ref: "#/components/schemas/AdTargetingAllowance"
+        targetingSummary:
+          $ref: "../target/schemas.yaml#/components/schemas/TargetingSummary"
+        targeting:
+          $ref: "../target/schemas.yaml#/components/schemas/TargetingView"
+        salesPolicies:
+          type: array
+          items:
+            $ref: "../product-sales-policy/schemas.yaml#/components/schemas/ProductSalesPolicyModel"
+        owner:
+          $ref: '#/components/schemas/ProductOwner'
+    ProductResponse:
+      allOf:
+        - $ref: '#/components/schemas/ProductModel'
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              nullable: false
+            productVersionId:
+              type: integer
+              format: int64
+              nullable: false
+            reviewStatus:
+              $ref: "../review/schemas.yaml#/components/schemas/ReviewStatus"
+            operationStatus:
+              type: string
+              enum:
+                - DRAFT
+                - REVIEWING
+                - ACTIVATED
+                - INACTIVATED
+                - EXPIRED
+            resellers:
+              type: array
+              items:
+                $ref: "#/components/schemas/ProductReseller"
+            creator:
+              type: string
+            createdAt:
+              type: string
+              format: date-time
+            targetingId:
+              type: integer
+              format: int64
+            attributesStr:
+              type: string
+            availableClickTriggerTypes:
+              type: array
+              items:
+                type: string
+    ProductRequest:
+      type: object
+      properties:
+        reviewSkipped:
+          type: boolean
+          default: false
+        participantId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        creativeType:
+          $ref: '../creative/schemas.yaml#/components/schemas/CreativeType'
+          default: VIDEO
+        priceUnit:
+          type: integer
+          format: int64
+        price:
+          type: number
+          format: double
+          default: 10.0
+        campaignAvailableFrom:
+          type: string
+          format: date
+        campaignAvailableTo:
+          type: string
+          format: date
+        publishableFrom:
+          type: string
+          format: date
+        publishableTo:
+          type: string
+          format: date
+        placements:
+          type: array
+          items:
+            type: integer
+            format: int64
+        constantTargeting:
+          type: integer
+          format: int64
+        timeSlotAdTargetingAllowance:
+          $ref: "#/components/schemas/AdTargetingAllowance"
+        audienceAdTargetingAllowance:
+          $ref: "#/components/schemas/AdTargetingAllowance"
+        regionAdTargetingAllowance:
+          $ref: "#/components/schemas/AdTargetingAllowance"
+        targetingSummary:
+          $ref: "../target/schemas.yaml#/components/schemas/TargetingSummary"
+        targeting:
+          $ref: "../target/schemas.yaml#/components/schemas/TargetingModel"
+        salesPolicies:
+          $ref: "../product-sales-policy/schemas.yaml#/components/schemas/ProductSalesPolicyModel"
+        owner:
+          $ref: '#/components/schemas/ProductOwner'
+    ProductOwner:
+      allOf:
+        - $ref: '../common/schemas.yaml#/components/schemas/CommonIdDisplayName'
+        - type: object
+    ProductPriceUnit:
+      allOf:
+        - $ref: '../common/schemas.yaml#/components/schemas/CommonIdDisplayName'
+        - type: object
+    AdTargetingAllowance:
+      type: string
+      enum:
+        - ALLOWED
+        - FORBIDDEN
+        - ASSIGNED
+      nullable: false
+      default: ALLOWED
+    ProductReseller:
+      type: object
+      properties:
+        agencyId:
+          type: integer
+          format: int64
+          example: 1
+        agencyName:
+          type: string
+        commission:
+          type: number
+          format: double
+    PlacementProduct:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        placementId:
+          type: integer
+          format: int64
+          nullable: false
+        placementName:
+          type: string
+          nullable: false
+          default: ''
+        platformId:
+          type: integer
+          format: int64
+          nullable: false
+        platformName:
+          type: string
+          nullable: false
+          default: ''
+        publisherId:
+          type: integer
+          format: int64
+          nullable: false
+        publisherName:
+          type: string
+          nullable: false
+          default: ''
+        contentId:
+          type: integer
+          format: int64
+          nullable: false
+        contentName:
+          type: string
+          nullable: false
+          default: ''
+
+    SelectableProductInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        activeProductVersionId:
+          type: integer
+          format: int64
+        type:
+          $ref: "../creative/schemas.yaml#/components/schemas/CreativeType"
+    ProductType:
+      type: string
+      enum:
+        - AD
+        - FILLER # filler, ending
+    ProductStatus:
+      type: string
+      enum:
+        - DRAFT
+        - REVIEWING
+        - ACTIVATED
+        - INACTIVATED
+        - EXPIRED
+    ProductResellerModel:
+      type: object
+      required:
+        - adAgencyId
+        - commission
+      properties:
+        adAgencyId:
+          type: integer
+          format: int64
+          example: 0
+        commission:
+          type: number
+          format: double
+          example: 10.00
+    ProductTargetable:
+      type: object
+      properties:
+        namePath:
+          type: string
+          example: '서울특별시 > 강남구 > 삼성동'
+        inclusive:
+          type: boolean
+        targetCategoryId:
+          type: integer
+          format: int64
+          example: 0
+        type:
+          $ref: '#/components/schemas/ProductTargetingType'
+    ProductTargetingType:
+      type: string
+      enum:
+        - REGION
+        - SEGMENT
+    ProductPlacement:
+      allOf:
+        - $ref: '../common/schemas.yaml#/components/schemas/CommonIdDisplayName'
+        - type: object
+          properties:
+            platformId:
+              type: integer
+              format: int64
+              nullable: false
+    ProductVersionPlacement:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        product:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        constantTargeting:
+          type: integer
+          format: int64
+        name:
+          type: string
+          nullable: false
+          default: ''
+        placementProduct:
+          type: array
+          items:
+            $ref: '#/components/schemas/PlacementProductVersion'
+    PlacementProductVersion:
+      type: object
+      properties:
+        productVersion:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        placement:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0

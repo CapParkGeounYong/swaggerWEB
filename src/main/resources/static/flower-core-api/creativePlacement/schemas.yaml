@@ -1,0 +1,36 @@
+components:
+  schemas:
+    CreativePlacementView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: CreativePlacement Id
+        placementId:
+          type: integer
+          format: int64
+          description: 광고 영역 id
+        placementName:
+          type: string
+          description: 광고 영역 이름
+        contentId:
+          type: integer
+          format: int64
+          description: 콘텐츠 ID
+        contentName:
+          type: string
+          description: 콘텐츠 이름
+        participantId:
+          type: integer
+          format: int64
+          description: 리뷰어 조직 id
+        participantName:
+          type: string
+          description: 리뷰어 조직 이름
+        sequence:
+          type: integer
+          format: int32
+        status:
+          type: string
+          description: 심사 상태

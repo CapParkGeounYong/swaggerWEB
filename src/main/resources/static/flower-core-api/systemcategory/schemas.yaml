@@ -1,0 +1,98 @@
+components:
+  schemas:
+    SystemCategoryView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        idPath:
+          type: string
+        name:
+          type: string
+        namePath:
+          type: string
+        parentId:
+          type: integer
+          format: int64
+        depth:
+          type: integer
+          format: int32
+        description:
+          type: string
+    ParentCategoryName:
+      type: string
+      default:
+      example:
+      enum:
+        - PAGE_SORT_ORDER
+        - CREATIVE_ASSET_STATUS
+        - CREATIVE_ASSET_TYPE
+        - CREATIVE_TYPE
+        - CONTENT_TYPE
+        - CUE_TYPE
+        - MEMBER_STATUS
+        - PRICE_UNIT
+        - PRODUCT_STATUS
+        - AD_TARGETING_ALLOWANCE
+        - TARGETING_TARGET_ROOT_NODE
+        - REVIEW_CHAIN_STATUS
+        - REVIEW_SUBJECT_TYPE
+        - REVIEW_TYPE
+        - ROLE_TYPE
+        - INDUSTRY
+        - CAMPAIGN_TYPE
+        - CAMPAIGN_CLASSIFICATION
+        - SYSTEMS
+        - DSP
+    SystemsType:
+      type: string
+      default: 'FLOWER'
+      enum:
+        - BIGAD
+        - TOWNAD
+        - UPLUS TOTAL
+        - KIBA
+        - CATV
+    ConstantsResponse:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          default: 0
+          example: 1
+          nullable: false
+        name:
+          type: string
+          nullable: false
+          default: ""
+          example: "이름"
+        displayName:
+          type: string
+          nullable: false
+          default: ""
+          example: "표시할 이름"
+        description:
+          type: string
+          nullable: false
+          default: ""
+          example: "설명"
+    EnumConstantsResponse:
+      type: object
+      properties:
+        id:
+          type: string
+          default: ""
+          example: "ENUM-NAME"
+          nullable: false
+        displayName:
+          type: string
+          nullable: false
+          default: ""
+          example: "표시할 이름"
+        description:
+          type: string
+          nullable: false
+          default: ""
+          example: "설명"

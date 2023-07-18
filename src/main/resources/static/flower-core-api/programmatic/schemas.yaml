@@ -1,0 +1,159 @@
+components:
+  schemas:
+    ProgrammaticCampaignModel:
+      allOf:
+        - $ref: '#/components/schemas/ProgrammaticCampaignDetail'
+        - type: object
+          properties:
+            adNetwork:
+              type: object
+              $ref: '#/components/schemas/AdNetworkModel'
+    ProgrammaticCampaignDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          default: null
+        name:
+          type: string
+        adId:
+          type: integer
+          format: int64
+          default: null
+        assetPlaybackType:
+          $ref: "../ad/schemas.yaml#/components/schemas/AssetPlaybackType"
+        participantId:
+          type: integer
+          format: int64
+        type:
+          $ref: "../campaign/schemas.yaml#/components/schemas/CampaignType"
+        startAt:
+          type: string
+          format: date
+        endAt:
+          type: string
+          format: date
+        actualGoal:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        creativeType:
+          $ref: '../creative/schemas.yaml#/components/schemas/CreativeType'
+        impressionGoalTerm:
+          type: string
+          $ref: "../ad/schemas.yaml#/components/schemas/ImpressionGoalTermType"
+        productId:
+          type: integer
+          format: int64
+        reviewSkipped:
+          type: boolean
+          default: true
+        assignProperties:
+          $ref: "../ad/schemas.yaml#/components/schemas/AssignProperties"
+        constantTargetingId:
+          type: integer
+          format: int64
+        targetingId:
+          type: integer
+          format: int64
+        targetingSummary:
+          $ref: "../target/schemas.yaml#/components/schemas/TargetingSummary"
+        targeting:
+          $ref: "../target/schemas.yaml#/components/schemas/TargetingView"
+        placementsExcluded:
+          type: array
+          items:
+            type: integer
+            format: int64
+    AdNetworkModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          default: null
+        adId:
+          type: integer
+          format: int64
+          default: null
+        protocol:
+          $ref: "#/components/schemas/AdNetworkProtocol"
+        adCallType:
+          $ref: "#/components/schemas/AdCallType"
+        tagUrl:
+          type: string
+          default: null
+        cacheTimeout:
+          type: integer
+          format: int32
+          default: null
+        creativeReviewSkipped:
+          type: boolean
+        playTime:
+          type: integer
+          format: int32
+        cdnType:
+          $ref: "#/components/schemas/CdnType"
+        attributes:
+          type: object
+          properties:
+            enableAfterAdCall:
+              type: boolean
+            enableDistributableAdCall:
+              type: boolean
+    CdnType:
+      type: string
+      default: INTERNAL
+      enum:
+        - S3
+        - INTERNAL
+        - EXTERNAL
+    AdCallType:
+      type: string
+      enum:
+        - CLIENT_AD_REQUEST
+        - SERVER_PROXY
+    AdNetworkProtocol:
+      type: string
+      enum:
+        - VAST
+        - GOOGLE_AD
+        - OPEN_RTB
+    ProgrammaticCampaignPage:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        startAt:
+          type: string
+          format: date
+        endAt:
+          type: string
+          format: date
+        placementCount:
+          type: integer
+          format: int32
+        playTime:
+          type: integer
+          format: int32
+        impressionGoalTerm:
+          type: string
+          $ref: "../ad/schemas.yaml#/components/schemas/ImpressionGoalTermType"
+        actualGoal:
+          type: integer
+          format: int64
+        dspName:
+          type: string
+        status:
+          type: string
+          $ref: "../campaign/schemas.yaml#/components/schemas/CampaignStatus"
+    ProgrammaticCampaignStatus:
+      type: string
+      enum:
+        - NORMAL
+        - PAUSED

@@ -1,0 +1,735 @@
+components:
+  schemas:
+    AdModel:
+      allOf:
+        - $ref: "../target/schemas.yaml#/components/schemas/TargetingView"
+        - type: object
+          properties:
+            id:
+              type: integer
+              format: int64
+              default: null
+            adVersionId:
+              type: integer
+              format: int64
+            parentAdVersionId:
+              type: integer
+              format: int64
+              description: 이전 버젼으로부터 복사하거나 변경하는 경우 이전 버젼의 아이디를 전달
+            productId:
+              type: integer
+              format: int64
+            productVersionId:
+              type: integer
+              format: int64
+            name:
+              type: string
+            startAt:
+              type: string
+              format: date
+            endAt:
+              type: string
+              format: date
+            creativeId:
+              type: integer
+              format: int64
+              nullable: false
+            clickUrl:
+              type: string
+            priceUnitId:
+              type: integer
+              format: int64
+            computedPrice: # 자동계산 단가? => 사용자가 입력한 가격
+              type: number
+              format: double
+            actualPrice:
+              type: number
+              format: double
+            actualGoal:
+              type: integer
+              format: int64
+              nullable: false
+              default: 0
+              description: 프로모션, 부가량, 임의보너스가 적용된 최종 목표 노출 수
+            impressionGoalTerm:
+              type: string
+              $ref: "#/components/schemas/ImpressionGoalTermType"
+            arbitraryBonus:
+              type: integer
+              format: int32
+            budget:
+              type: integer
+              format: int64
+            constantTargetingId:
+              type: integer
+              format: int64
+            targetingId:
+              type: integer
+              format: int64
+            targetingSummary:
+              $ref: "../target/schemas.yaml#/components/schemas/TargetingSummary"
+            targeting:
+              $ref: "../target/schemas.yaml#/components/schemas/TargetingModel"
+            placementsExcluded:
+              type: array
+              items:
+                type: integer
+                format: int64
+            description:
+              type: string
+              description: description about ad change or else
+            desiredDate:
+              type: string
+              format: date
+            applyTerm:
+              type: string
+              $ref: "#/components/schemas/ApplyTermType"
+            reviewSkipped:
+              type: boolean
+              default: false
+            assignProperties:
+              $ref: "#/components/schemas/AssignProperties"
+            assetPlaybackType:
+              $ref: "#/components/schemas/AssetPlaybackType"
+            adTrackingModels:
+              type: array
+              items:
+                $ref: "#/components/schemas/AdTrackingModel"
+            integrationId:
+              type: string
+            attributes:
+              $ref: "#/components/schemas/AdAttributes"
+            sortOrder:
+              type: integer
+              format: int32
+              nullable: false
+              default: 0
+            additional:
+              type: boolean
+              default: false
+            clickTrigger:
+              $ref: "#/components/schemas/AdTriggerAttributes"
+              default: NONE
+    AssetPlaybackType:
+      type: string
+      enum:
+        - DOWNLOAD_AND_PLAY
+        - STREAMING
+    AdAttributes:
+      type: object
+      properties:
+        catv:
+          $ref: "#/components/schemas/CatvAttributes"
+    CatvAttributes:
+      type: object
+      properties:
+        transmissionCount:
+          type: integer
+          format: int32
+        slotNo:
+          type: integer
+          format: int32
+    AdView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: true
+        adVersionId:
+          type: integer
+          format: int64
+          nullable: true
+        participantId:
+          type: integer
+          format: int64
+          nullable: true
+        versionNo:
+          type: integer
+          format: int32
+        parentAdVersionId:
+          type: integer
+          format: int64
+          description: 이전 버젼으로부터 복사하거나 변경하는 경우 이전 버젼의 아이디를 전달
+        operationStatus:
+          $ref: "../ad/schemas.yaml#/components/schemas/AdStatus"
+          nullable: false
+          default: DRAFT
+        creativeReviewStatus:
+          $ref: "../review/schemas.yaml#/components/schemas/ReviewChainStatus"
+        adReviewStatus:
+          $ref: "../review/schemas.yaml#/components/schemas/ReviewChainStatus"
+        reviewStatus:
+          $ref: "../review/schemas.yaml#/components/schemas/ReviewChainStatus"
+          nullable: false
+          default: DRAFT
+        attributes:
+          $ref: "#/components/schemas/AdAttributes"
+          description: refer to AdModel.attributes specification on POST /campaign
+        attributesStr:
+          type: string
+          description: refer to AdModel.attributes specification on POST /campaign
+        name:
+          type: string
+        deleted:
+          type: boolean
+        deletable:
+          type: boolean
+          default: false
+          description: 광고 삭제 가능 여부. 이미 집행되어 노출이 있는 광고는 삭제할 수 없음.
+        additional:
+          type: boolean
+        productId:
+          type: integer
+          format: int64
+        productVersionId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        productPlacements:
+          type: array
+          items:
+            $ref: "../product/schemas.yaml#/components/schemas/PlacementProduct"
+        platformIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+            nullable: false
+            default: 0
+        startAt:
+          type: string
+          format: date
+        endAt:
+          type: string
+          format: date
+        productPublishableFrom:
+          type: string
+          format: date
+        productPublishableTo:
+          type: string
+          format: date
+        creativeId:
+          type: integer
+          format: int64
+        creativeName:
+          type: string
+        creativeType:
+          $ref: "../creative/schemas.yaml#/components/schemas/CreativeType"
+          nullable: true
+        creativeAttributes:
+          $ref: "../creative/schemas.yaml#/components/schemas/CreativeAttributes"
+        creativeAttributesStr:
+          type: string
+        clickUrl:
+          type: string
+        previewAssetUrl:
+          type: string
+        priceUnitId:
+          type: integer
+          format: int64
+        priceUnitName:
+          type: string
+        computedPrice:
+          type: number
+          format: double
+        actualPrice:
+          type: number
+          format: double
+        actualGoal:
+          type: integer
+          format: int64
+        impressionGoalTerm:
+          type: string
+          $ref: "#/components/schemas/ImpressionGoalTermType"
+        arbitraryBonus:
+          type: integer
+          format: int32
+        budget:
+          type: integer
+          format: int64
+        adTargetingId:
+          type: integer
+          format: int64
+        productTargetingId:
+          type: integer
+          format: int64
+          nullable: false
+        targetingSummary:
+          $ref: "../target/schemas.yaml#/components/schemas/TargetingSummary"
+        targeting:
+          $ref: "../target/schemas.yaml#/components/schemas/TargetingView"
+        excludePlacements:
+          type: array
+          items:
+            type: integer
+            format: int64
+        rejectedPlacements:
+          type: array
+          items:
+            type: integer
+            format: int64
+        assignProperties:
+          $ref: "#/components/schemas/AssignProperties"
+        timeSlotAdTargetingAllowance:
+          $ref: "../product/schemas.yaml#/components/schemas/AdTargetingAllowance"
+        audienceAdTargetingAllowance:
+          $ref: "../product/schemas.yaml#/components/schemas/AdTargetingAllowance"
+        regionAdTargetingAllowance:
+          $ref: "../product/schemas.yaml#/components/schemas/AdTargetingAllowance"
+        productConstantTargetingId:
+          type: integer
+          format: int64
+        adConstantTargetingId:
+          type: integer
+          format: int64
+        constantTargeting:
+          $ref: "../target/schemas.yaml#/components/schemas/ConstantTargetingModel"
+        adProductSalesPolicies:
+          $ref: "../product-sales-policy/schemas.yaml#/components/schemas/ProductSalesPolicyEvaluationView"
+        sortOrder:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        description:
+          type: string
+          description: description about ad
+        desiredDate:
+          type: string
+          format: date
+        clickTrigger:
+          $ref: "#/components/schemas/AdTriggerAttributes"
+          default: NONE
+    AdTargeting:
+      allOf:
+        - $ref: "../target/schemas.yaml#/components/schemas/TargetingView"
+        - type: object
+    AdHistory:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        parentAdVersionId:
+          type: integer
+          format: int64
+        submittedDate:
+          type: string
+          format: date
+        submitter:
+          $ref: "#/components/schemas/MemberNameAccount"
+        operationStatus:
+          $ref: "#/components/schemas/AdStatus"
+          nullable: false
+          default: DRAFT
+        creativeReviewStatus:
+          $ref: "../review/schemas.yaml#/components/schemas/ReviewChainStatus"
+          nullable: false
+        reviewStatus:
+          $ref: "../review/schemas.yaml#/components/schemas/ReviewChainStatus"
+          nullable: false
+          default: AWAITING
+        desiredDate:
+          type: string
+          format: date
+        description:
+          type: string
+
+    AdTransmissionRecordUrl:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        adId:
+          type: integer
+          format: int64
+        url:
+          type: string
+        description:
+          type: string
+        creator:
+          $ref: "#/components/schemas/MemberNameAccount"
+        createdAt:
+          type: string
+          format: date-time
+    MemberNameAccount:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        account:
+          type: string
+        name:
+          type: string
+    AdStatus:
+      type: string
+      enum:
+        - TEMPORARY
+        - DRAFT
+        - CREATIVE_REVIEWING
+        - AD_REVIEWING
+        - DEPLOYING
+        - PUBLISHED
+        - PAUSED
+        - READY
+        - COMPLETED
+    AdValidate:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        adVersion:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        adName:
+          type: string
+        creative:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        creativeName:
+          type: string
+          format: string
+          nullable: false
+          default: ''
+        creativeStatus:
+          $ref: '../ad/schemas.yaml#/components/schemas/AdValidateStatus'
+        product:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        productName:
+          type: string
+          format: string
+          nullable: false
+          default: ''
+        productStatus:
+          $ref: '../ad/schemas.yaml#/components/schemas/AdValidateStatus'
+        targeting:
+          type: array
+          items:
+            $ref: '../ad/schemas.yaml#/components/schemas/AdValidateTarget'
+        placement:
+          type: array
+          items:
+            $ref: '../ad/schemas.yaml#/components/schemas/AdValidatePlacement'
+    AdValidateTarget:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        name:
+          type: string
+          nullable: false
+          default: ''
+        type:
+          $ref: '../target/schemas.yaml#/components/schemas/TargetGroupName'
+        deleted:
+          type: boolean
+          nullable: false
+          default: false
+    AdValidatePlacement:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        name:
+          type: string
+          nullable: false
+          default: ''
+        deleted:
+          type: boolean
+          nullable: false
+          default: false
+    AdValidateResponse:
+      type: object
+      properties:
+        adId:
+          type: integer
+          format: int64
+        adVersionId:
+          type: integer
+          format: int64
+        adName:
+          type: string
+        adValidateStatus:
+          type: string
+          enum:
+            - SUCCESS
+            - SOME_EXCLUDED
+            - IMPOSSIBLE
+        reason:
+          type: object
+          properties:
+            product:
+              $ref: '#/components/schemas/AdTargetValidateResult'
+            creative:
+              $ref: '#/components/schemas/AdTargetValidateResult'
+            placement:
+              $ref: '#/components/schemas/AdTargetValidateResult'
+            region:
+              $ref: '#/components/schemas/AdTargetValidateResult'
+            segment:
+              $ref: '#/components/schemas/AdTargetValidateResult'
+    AdValidateStatus:
+      type: string
+      enum:
+        - NORMAL
+        - DELETED
+        - ALL_PLACEMENT_DELETED
+        - UNAVAILABLE_PRODUCT
+        - CHANGED_PRODUCT
+        - PUBLISH_PERIOD_EXPIRATION
+        - UNAVAILABLE_PARTICIPANT
+    AdTargetValidateResult:
+      type: object
+      properties:
+        status:
+          $ref: '../ad/schemas.yaml#/components/schemas/AdValidateStatus'
+        invalidIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        invalidNames:
+          type: array
+          items:
+            type: string
+    AdProductSalesPolicyModel:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: string
+          enum:
+            - PREMIUM
+            - PROMOTION
+        ratio:
+          type: number
+          format: double
+    AdTrackingModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          default: null
+          description: 생성시 null, 수정시 id 넘겨줘야 함
+        trackingType:
+          $ref: '#/components/schemas/TrackingType'
+        url:
+          type: string
+          nullable: false
+          default: ''
+        enabled:
+          type: boolean
+          nullable: false
+          default: false
+        playtime:
+          type: integer
+          format: int32
+          nullable: true
+          default: null
+          description: trackingType 이 PLAYTIME 일 경우에만 값을 넘긴다.
+    TrackingType:
+      type: string
+      enum:
+        - START
+        - IMPRESSION
+        - CLICK
+        - COMPLETE
+        - FIRST_QUARTILE
+        - MID_POINT
+        - THIRD_QUARTILE
+        - SKIP
+        - PLAYTIME
+      nullable: false
+      default: START
+    ImpressionGoalTermType:
+      type: string
+      enum:
+        - DAILY
+        - ENTIRE_PERIOD
+    ApplyTermType:
+      type: string
+      enum:
+        - ON_REVIEW_ACCEPTED
+        - ON_RESERVED_TIME
+    AssignProperties:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: true
+        viewSequence:
+          type: integer
+          format: int32
+          nullable: false
+          default: 3000
+          description: 노출 우선 순위
+        priority:
+          type: integer
+          format: int32
+          nullable: false
+          default: 100000
+          description: 배정 우선 순위
+        tune:
+          type: boolean
+          nullable: false
+          default: true
+          description: 자동 보정 여부
+        test:
+          type: boolean
+          nullable: false
+          default: false
+          description: 테스트 여부
+        excessiveImpressionBlockable:
+          type: boolean
+          nullable: false
+          default: false
+          description: 일 초과 노출 방지 여부
+        fixedSlot:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+          description: 슬롯 고정값. 0 - 고정 없음, 1 - 첫번째 슬롯 고정, 나머지 값은 현재는 의미 없음
+        firstSlotOnly:
+          type: boolean
+          nullable: false
+          default: false
+        complementaryGoal:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+          description: 부가 노출수
+        maxRepeatedImpressionCount:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+          description: 반복 노출 가능 횟수
+        frequencyCap:
+          type: integer
+          format: int64
+          description: frequency capping
+          nullable: false
+          default: 0
+        frequencyDuration:
+          type: integer
+          format: int32
+          description: duration for frequency capping. unit - day
+          nullable: false
+          default: 0
+    IntegratedAdModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        productId:
+          type: integer
+          format: int64
+        startAt:
+          type: string
+          format: date-time
+        endAt:
+          type: string
+          format: date-time
+        actualGoal:
+          type: integer
+          format: int64
+        bonus:
+          type: integer
+          format: int32
+        computedPrice:
+          type: number
+          format: double
+        actualPrice:
+          type: number
+          format: double
+        budget:
+          type: integer
+          format: int64
+        integrationId:
+          type: string
+        creativeIntegrationId:
+          type: string
+        deleted:
+          type: boolean
+        event:
+          type: string
+          enum:
+            - CREATE
+            - IMMEDIATELY_STOP
+            - AD_CHANGE
+            - UNCHANGED
+        placementIds:
+          type: array
+          items:
+            type: integer
+            format: int64
+        targeting:
+          $ref: '#/components/schemas/IntegratedAdTargeting'
+    IntegratedAdTargeting:
+      type: object
+      properties:
+        regions:
+          type: array
+          items:
+            type: integer
+            format: int64
+        hours:
+          type: array
+          items:
+            type: integer
+            format: int32
+        segments:
+          type: array
+          items:
+            type: object
+            properties:
+              segment:
+                type: array
+                items:
+                  type: integer
+                  format: int64
+              inclusive:
+                type: boolean
+                nullable: false
+                default: true
+    AdTriggerAttributes:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+          default: null
+        value:
+          type: string
+          nullable: true
+          default: null
+
+

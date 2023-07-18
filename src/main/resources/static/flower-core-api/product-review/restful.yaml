@@ -1,0 +1,126 @@
+products:
+  get:
+    tags:
+      - product-review
+    summary: Get ProductReview page
+    operationId: productReviews
+    parameters:
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+            - placementReviewPageResponse_id
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+      - name: participantId
+        in: query
+        required: true
+        type: integer
+        format: int64
+        description: publisher Id
+        example: 1
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/ProductReviewPageResponse'
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Product Data not foundid
+historyList:
+  get:
+    tags:
+      - product-review-history
+    summary: Fetch product reviews by a placement id
+    operationId: fetchAllBy
+    parameters:
+      - name: publisherId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "./../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "schemas.yaml#/components/schemas/ProductReviewHistoryListDto"
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found
+id:
+  patch:
+    tags:
+      - product-review
+      - decision-review
+    summary: Approve or deny product review
+    operationId: decisionProductReview
+    parameters:
+      - name: productId
+        in: path
+        description: 'id of product'
+        required: true
+        schema:
+          type: string
+      - name: productVersionId
+        in: path
+        description: 'id of product_version'
+        required: true
+        schema:
+          type: string
+      - name: participantId
+        in: query
+        description: 'id of participant'
+        required: true
+        schema:
+          type: string
+      - $ref: "../common/schemas.yaml#/components/parameters/decision"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/ReasonForRejection"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found

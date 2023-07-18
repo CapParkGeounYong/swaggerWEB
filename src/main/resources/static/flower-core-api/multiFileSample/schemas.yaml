@@ -1,0 +1,26 @@
+components:
+  schemas:
+    MultiFileSample:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: Sample Child2 Data
+          nullable: false
+          maxLength: 255
+          default: ''
+        status:
+          $ref: '#/components/schemas/MultiSampleStatus'
+    MultiSampleStatus:
+      type: string
+      example: NORMAL
+      nullable: false
+      default: NORMAL
+      enum:
+        - TEMPORARY
+        - NORMAL
+        - DELETED

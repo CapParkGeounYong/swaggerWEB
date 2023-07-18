@@ -1,0 +1,221 @@
+programmaticCampaigns:
+  get:
+    tags:
+      - programmatic
+    summary: Get Programmatic Campaign List
+    operationId: get
+    parameters:
+      - name: keyword
+        in: query
+        description: campaign name or id
+        schema:
+          type: string
+      - name: participantId
+        in: query
+        description: participant id
+        schema:
+          type: integer
+          format: int64
+      - name: status
+        in: query
+        description: campaign status
+        schema:
+          $ref: "../campaign/schemas.yaml#/components/schemas/CampaignExecutionStatus"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+            - programmaticCampaignPage_id
+            - programmaticCampaignPage_dspName
+            - programmaticCampaignPage_name
+            - programmaticCampaignPage_startAt
+            - programmaticCampaignPage_endAt
+            - programmaticCampaignPage_playTime
+            - programmaticCampaignPage_impressionGoalTerm
+            - programmaticCampaignPage_actualGoal
+            - programmaticCampaignPage_placementCount
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: 'schemas.yaml#/components/schemas/ProgrammaticCampaignPage'
+  post:
+    tags:
+      - programmatic
+    summary: Create Programmatic Campaign
+    operationId: create
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/ProgrammaticCampaignModel"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int32
+programmaticCampaignDetail:
+  get:
+    tags:
+      - programmatic
+    parameters:
+      - name: id
+        in: path
+        description: campaignId
+        required: true
+        schema:
+          type: integer
+          format: int64
+          example: 1
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/ProgrammaticCampaignModel'
+  put:
+    tags:
+      - programmatic
+    summary: Update Programmatic Campaign
+    operationId: update
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/ProgrammaticCampaignModel"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int32
+  delete:
+    tags:
+      - programmatic
+    summary: Delete Programmatic Campaign
+    operationId: delete
+    parameters:
+      - name: id
+        in: path
+        description: campaign id
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: boolean
+              example: true
+pause:
+  patch:
+    tags:
+      - programmatic
+    summary: Pause Programmatic Campaign
+    operationId: patch
+    parameters:
+      - name: id
+        in: path
+        description: campaign id
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "./../ad/schemas.yaml#/components/schemas/AdView"
+duplicate:
+  get:
+    tags:
+      - programmatic
+    summary: Duplicate Programmatic Campaign
+    operationId: duplicate
+    parameters:
+      - name: id
+        in: path
+        description: campaign id
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/components/schemas/ProgrammaticCampaignModel"

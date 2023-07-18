@@ -1,0 +1,62 @@
+list:
+  get:
+    tags:
+      - sample
+    summary: Get Sample by ID
+    operationId: getSample
+    parameters:
+      - name: id
+        in: path
+        description: 'For testing. Use 1'
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/MultiFileSample'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+id:
+  get:
+    tags:
+      - sample
+    summary: Get Sample by ID
+    operationId: getSample
+    parameters:
+      - name: id
+        in: path
+        description: 'For testing. Use 1'
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/MultiFileSample'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found

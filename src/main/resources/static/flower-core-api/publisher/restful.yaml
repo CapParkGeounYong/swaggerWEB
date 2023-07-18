@@ -1,0 +1,270 @@
+byId:
+  get:
+    tags:
+      - publisher
+    summary: Get Publisher by ID
+    operationId: findBy
+    parameters:
+      - name: id
+        in: path
+        description: 'find publisher info'
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/Publisher'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+  patch:
+    tags:
+      - publisher
+    summary: Get flower-commission by publisher id
+    operationId: patchPublisher
+    parameters:
+      - name: id
+        in: path
+        description: 'publisher id'
+        required: true
+        schema:
+          type: integer
+          format: int32
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            additionalProperties:
+              type: string
+  put:
+    tags:
+      - publisher
+    summary: Update publisherCode and platformCommission on Publisher Info
+    operationId: update
+    parameters:
+      - name: id
+        in: path
+        description: 'find publisher info'
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/Publisher"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/Publisher'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+reviewers:
+  post:
+    tags:
+      - publisher
+    summary: Get reviewers by Publisher id and review type
+    operationId: createOrUpdateReviewer
+    parameters:
+      - name: id
+        in: path
+        description: 'publisher id'
+        required: true
+        schema:
+          type: integer
+          format: int32
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/Reviewer"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/Reviewer'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+  get:
+    tags:
+      - publisher
+    summary: Get reviwers by Publisher id and review type
+    operationId: findReviewersBy
+    parameters:
+      - name: id
+        in: path
+        description: 'publisher id'
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: subjectType
+        in: query
+        description: 'subject type'
+        required: true
+        schema:
+          type: string
+          enum:
+            - PLACEMENT
+            - PRODUCT
+            - CAMPAIGN
+            - CREATIVE
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/Reviewer'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+reviewer:
+  delete:
+    tags:
+      - publisher
+    summary: Get reviewers by Publisher id and review type
+    operationId: deleteReviewers
+    parameters:
+      - name: id
+        in: path
+        description: 'reviewer id'
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/Reviewer'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+members:
+  get:
+    tags:
+      - publisher
+    summary: Get reviewers by Publisher id and review type
+    operationId: findReviewersBy
+    parameters:
+      - name: id
+        in: path
+        description: 'publisher id'
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/PublisherMember'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found
+flowerCommission:
+  get:
+    tags:
+      - publisher
+    summary: Get flower-commision by publisher id
+    operationId: fetchFlowerCommsisionBy
+    parameters:
+      - name: id
+        in: path
+        description: 'publisher id'
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/FlowerCommission'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Sample Data not found

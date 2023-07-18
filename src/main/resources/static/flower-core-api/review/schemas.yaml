@@ -1,0 +1,45 @@
+components:
+  schemas:
+    ReviewType:
+      type: string
+      enum:
+        - CREATIVE
+        - PLACEMENT
+        - PRODUCT
+        - CAMPAIGN
+        - AD_CHANGE
+    ReviewChainStatus:
+      type: string
+      enum:
+        - AWAITING
+        - ON_GOING
+        - ACCEPTED
+        - REJECTED
+        - SKIPPED
+        - PRECEDENT_REVIEW_EXISTS
+    ReviewStatus:
+      type: string
+      enum:
+        - AWAITING
+        - ON_GOING
+        - ACCEPTED
+        - REMOTELY_ACCEPTED
+        - REJECTED
+        - INVALIDATED
+        - SKIPPED
+        - PRECEDENT_REVIEW_EXISTS
+    ExternalCreativeReviewPageResponse:
+      type: object
+      properties: # TODO
+        id:
+          type: integer
+          format: int64
+          default: 0
+          example: 1
+          nullable: false
+    ReasonForRejection:
+      type: object
+      properties:
+        message:
+          type: string
+          example: reason for rejection

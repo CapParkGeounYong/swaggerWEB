@@ -1,0 +1,158 @@
+search:
+  get:
+    tags:
+      - target
+    summary: search platform's target metadata
+    description: |
+      If platform parameter is one, response own target-category with vendorCode, else response master target-category.
+      <br><b>Important!</b> Only one parameter among namePathPrefix, idPathPrefix, and parentId must have a value.
+      <br><b>Important!</b> If allDescendant is true, one parameter among namePathPrefix, idPathPrefix, and parentId must have a value.
+    operationId: searchTargetMetadata
+    parameters:
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: TODO
+          example: TODO
+          enum:
+            - TODO
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+      - name: responseType
+        in: query
+        description: response type enum
+        required: false
+        schema:
+          type: string
+          enum: [ 'Simple', 'Attributes', 'Full' ]
+          default: Simple
+      - name: platformIds[]
+        in: query
+        description: platform id array
+        required: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+            example: 1
+      - name: allDescendant
+        in: query
+        description: if true, response all child data.
+        required: false
+        schema:
+          type: boolean
+          example: false
+          default: false
+      - name: namePathPrefix
+        in: query
+        description: name path prefix
+        required: false
+        schema:
+          type: string
+          example: '|SEGMENT|GOI|'
+      - name: idPathPrefix
+        in: query
+        description: id path prefix
+        required: false
+        schema:
+          type: string
+          example: '|1|2|'
+      - name: parentId
+        description: parent id
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          example: 1
+      - name: keywordType
+        description: keyword type
+        in: query
+        required: false
+        schema:
+          type: string
+          enum: [ 'Name', 'PostalCode' ]
+          default: Name
+      - name: keyword
+        description: search keyword using prefix
+        in: query
+        required: false
+        schema:
+          type: string
+          example: Baseball
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: 'schemas.yaml#/components/schemas/TargetCategoryModel'
+      '400':
+        description: Invalid Parameters
+descendants:
+  get:
+    tags:
+      - target
+    summary: search platform's target metadata
+    description: |
+      provides target categories sharing name path or ancestor, id path
+    operationId: descendants
+    parameters:
+      - name: namePath
+        in: query
+        description: Path concatenated all node names with delimiter '|'
+        example: "REGION|ADDRESS|"
+        schema:
+          type: string
+      - name: id
+        in: query
+        description: id which is ancestor of target categories to be provided
+        example: 1
+        schema:
+          type: integer
+          format: int64
+      - name: platformIds[]
+        in: query
+        description: platform id array
+        required: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int32
+            example: 1
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'schemas.yaml#/components/schemas/TargetCategoryModel'
+      '400':
+        description: Invalid Parameters

@@ -1,0 +1,157 @@
+list:
+  get:
+    summary: Returns a list of permission
+    tags:
+      - permission
+    parameters:
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: permissionDto_id
+          example: permissionDto_id
+          enum:
+            - permissionDto_id
+            - permissionDto_identifier
+            - permissionDto_description
+            - permissionDto_triggeredOn
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+        description: keyword for search
+        example: OCN
+        default: null
+      - name: triggeredOn
+        in: query
+        required: false
+        schema:
+          type: string
+        description: triggeredOn for search
+        example: FUNCTION / REST_API / MENU
+        default: null
+      - name: orgType
+        in: query
+        required: false
+        schema:
+          type: string
+        description: orgType for search
+        example: PLATFORM / ADVERTISER / PUBLISHER / AD_AGENCY
+        default: null
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "./../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "schemas.yaml#/components/schemas/PermissionDto"
+  post:
+    summary: Creates new permission
+    tags:
+      - permission
+    operationId: createPermission
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/PermissionCreationDto"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+
+id:
+  get:
+    summary: Returns a permission
+    tags:
+      - permission
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      '200':
+        description: Success
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/components/schemas/PermissionDto"
+
+  put:
+    summary: Updates a permission
+    tags:
+      - permission
+    operationId: updatePermission
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/PermissionCreationDto"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+  delete:
+    summary: Deletes a permission
+    tags:
+      - permission
+    operationId: deletePermission
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip

@@ -1,0 +1,35 @@
+id:
+  patch:
+    tags:
+      - ad-review
+      - decision-review
+    summary: Approve or deny ad review
+    operationId: DecisionAdReview
+    parameters:
+      - name: adVersionId
+        in: path
+        description: 'find review info'
+        required: true
+        schema:
+          type: string
+      - $ref: "../common/schemas.yaml#/components/parameters/decision"
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/ReasonForRejection"
+    responses:
+      "200":
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+      "400":
+        description: Invalid id supplied
+      "404":
+        description: Member Data not found

@@ -1,0 +1,134 @@
+components:
+  schemas:
+    RoleType:
+      type: string
+      enum:
+        - SYSTEM_ADMIN
+        - ADMIN
+        - MANAGER
+        - USER
+    LoginUserMember:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 영역 id
+          example: 1
+          nullable: false
+        account:
+          type: string
+          example: gd1234
+          nullable: false
+        timeSincePasswordChanged:
+          type: integer
+          format: int32
+          description: 로그인 성공 시, 계정의 비밀번호 최종 변경 후 며칠이 지났는지 날짜수, 변경 또는 가입 당일에는 0을 반환하고 다음날부터 1, 2, 3... 반환
+          example: 1
+          nullable: false
+    LoginUserParticipant:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: Participant id
+          example: 1
+          nullable: false
+    LoginUserPlatform:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 플랫폼 id
+          example: 1
+          nullable: false
+        name:
+          type: string
+          example: 플랫폼
+          nullable: false
+    LoginUserPublisher:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 퍼블리셔 id
+          example: 1
+          nullable: false
+        name:
+          type: string
+          example: 퍼블리셔
+          nullable: false
+    LoginUserAdAgency:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 광고 에이젼시 id
+          example: 1
+          nullable: false
+        name:
+          type: string
+          example: 광고 에이젼시
+          nullable: false
+    LoginUserAdvertiser:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 광고주 id
+          example: 1
+          nullable: false
+        name:
+          type: string
+          example: 광고주
+          nullable: false
+    LoginUserRole:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: 역할 id
+          example: 1
+          nullable: false
+        type:
+          $ref: "#/components/schemas/RoleType"
+    LoginUserInfo:
+      type: object
+      properties:
+        member:
+          $ref: "#/components/schemas/LoginUserMember"
+        participant:
+          $ref: "#/components/schemas/LoginUserParticipant"
+        publisher:
+          $ref: "#/components/schemas/LoginUserPublisher"
+        platform:
+          $ref: "#/components/schemas/LoginUserPlatform"
+        adAgency:
+          $ref: "#/components/schemas/LoginUserAdAgency"
+        Advertiser:
+          $ref: "#/components/schemas/LoginUserAdvertiser"
+        role:
+          $ref: "#/components/schemas/LoginUserRole"
+        menuPermissions:
+          type: array
+          items:
+            type: string
+        campaignId:
+          type: integer
+          format: int64
+          description: campaignId
+    Authentication:
+      type: object
+      properties:
+        username:
+          type: string
+          nullable: false
+        password:
+          type: string
+          nullable: false

@@ -1,0 +1,696 @@
+duplicate:
+  get:
+    tags:
+      - campaign
+      - campaign-creation-ui
+    summary: Check Campaign Name is Duplicated
+    operationId: duplicate
+    parameters:
+      - name: name
+        in: query
+        description: new campaign name
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: boolean
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+campaign:
+  get:
+    tags:
+      - campaign
+      - campaign-description-ui
+    summary: Get CampaignInfo By id
+    operationId: fetchById
+    parameters:
+      - name: id
+        in: path
+        description: 'For testing. Use 1'
+        required: true
+        schema:
+          type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: 'schemas.yaml#/components/schemas/CampaignView'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+  delete:
+    tags:
+      - campaign
+      - campaign-description-ui
+    summary: Delete Campaign By id
+    operationId: deleteCampaign
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: boolean
+      '400':
+        description: Invalid id supplied or validation fail
+  put:
+    tags:
+      - campaign
+      - campaign-creation-ui
+    summary: update a Campaign
+    operationId: update
+    parameter:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/CampaignUpdateModel"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: boolean
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+resubmit:
+  put:
+    tags:
+      - campaign
+      - campaign-creation-ui
+    summary: Re Submit Campaign
+    operationId: resubmit
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/CampaignModel"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int32
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+volatileUrls:
+  get:
+    tags:
+      - campaign
+      - campaign-list-ui
+    summary: Fetch Creative List
+    operationId: getCreatives
+    parameters:
+      - name: keyword
+        in: query
+        description: 검색 키워드
+        required: false
+        schema:
+          type: string
+          example: '15초 현대 신차'
+      - name: type
+        in: query
+        required: false
+        default: CHARGE
+        description: 캠페인 유형
+        schema:
+          $ref: "schemas.yaml#/components/schemas/CampaignType"
+      - name: submittedMonth
+        in: query
+        required: false
+        description: submittedMonth
+        schema:
+          type: string
+          example: YYYY-MM
+      - name: source
+        in: query
+        required: false
+        description: 출처.
+        schema:
+          type: integer
+          format: int64
+      - name: participantId
+        in: query
+        required: false
+        description: 캠페인 소유 participantId
+        schema:
+          type: integer
+          format: int64
+      - name: executionStatus
+        in: query
+        required: false
+        default: WAITING
+        description: executionStatus
+        example: 1
+        schema:
+          $ref: "schemas.yaml#/components/schemas/CampaignExecutionStatus"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              properties:
+                totalRows:
+                  type: integer
+                  format: int32
+                  example: 1234
+                data:
+                  type: array
+                  items:
+                    $ref: 'schemas.yaml#/components/schemas/CampaignForList'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+campaigns:
+  post:
+    tags:
+      - campaign
+      - campaign-creation-ui
+    summary: Create a Campaign
+    operationId: create
+    parameter:
+      - name: temporary
+        in: query
+        description: 임시 저장 여부
+        required: false
+        schema:
+          type: boolean
+          example: false
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/CampaignModel"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int32
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+  get:
+    tags:
+      - campaign
+      - campaign-list-ui
+    summary: Fetch Creative List
+    operationId: getCreatives
+    parameters:
+      - name: keyword
+        in: query
+        description: 검색 키워드
+        required: false
+        schema:
+          type: string
+          example: '15초 현대 신차'
+      - name: type
+        in: query
+        required: false
+        default: CHARGE
+        description: 캠페인 유형
+        schema:
+          $ref: "schemas.yaml#/components/schemas/CampaignType"
+      - name: submittedMonth
+        in: query
+        required: false
+        description: submittedMonth
+        schema:
+          type: string
+          example: YYYY-MM
+      - name: source
+        in: query
+        required: false
+        description: 출처.
+        schema:
+          type: integer
+          format: int64
+      - name: participantId
+        in: query
+        required: false
+        description: 캠페인 소유 participantId
+        schema:
+          type: integer
+          format: int64
+      - name: executionStatus
+        in: query
+        required: false
+        default: WAITING
+        description: executionStatus
+        example: 1
+        schema:
+          $ref: "schemas.yaml#/components/schemas/CampaignExecutionStatus"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSize"
+      - $ref: "../common/schemas.yaml#/components/parameters/pageNumber"
+      - pageSort:
+        name: pageSort
+        in: query
+        required: false
+        schema:
+          type: string
+          default: TODO
+          example: TODO
+          enum:
+            - campaignForList_id
+            - campaignForList_type
+            - campaignForList_name
+            - campaignForList_startAt
+            - campaignForList_endAt
+            - campaignForList_agency
+            - campaignForList_ownerId
+            - campaignForList_budget
+            - campaignForList_created_at
+      - $ref: "../common/schemas.yaml#/components/parameters/pageSortOrder"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              properties:
+                totalRows:
+                  type: integer
+                  format: int32
+                  example: 1234
+                data:
+                  type: array
+                  items:
+                    $ref: 'schemas.yaml#/components/schemas/CampaignForList'
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+temporaryUpdate:
+  put:
+    tags:
+      - campaign
+      - campaign-creation-ui
+    summary: Update a Temporary Campaign
+    operationId: updateTemporyCampaign
+    parameter:
+      - name: id
+        in: path
+        description: 캠페인 id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: temporary
+        in: query
+        description: 임시 저장 여부
+        required: false
+        schema:
+          type: boolean
+          example: false
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "schemas.yaml#/components/schemas/CampaignModel"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int32
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+campaignAds:
+  get:
+    tags:
+      - campaign
+      - campaign-description-ui
+    summary: Fetch Ad List of Campaign
+    operationId: fetchAdsById
+    parameters:
+      - name: id
+        in: path
+        description:
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schem a:
+              $ref: "../common/schemas.yaml#/components/schemas/Page"
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "../ad/schemas.yaml#/components/schemas/AdView"
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+campaignExecutionPerformance:
+  get:
+    tags:
+      - campaign
+      - campaign-description-ui
+    summary: Fetch Campaign Execution Perfomance Info
+    operationId: fetchExecutionPerformanceByAdvertiserId
+    parameters:
+      - name: advertiserId
+        in: query
+        description:
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/components/schemas/CampaignExecutionPerformance"
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Creative not found
+adTransmissionRecord:
+  get:
+    tags:
+      - ad
+      - campaign-description-ui
+    summary: Fetch TransmissionRecord List of Campaign's Ads
+    operationId: fetchAdTransmissionRecordById
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description:
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../ad/schemas.yaml#/components/schemas/AdTransmissionRecordUrl"
+      '400':
+        description: Invalid id supplied
+  post:
+    tags:
+      - ad
+      - campaign-description-ui
+    summary: Create TransmissionRecord of Ad
+    operationId: createAdTransmissionRecord
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              adId:
+                type: integer
+                format: int64
+              url:
+                type: string
+              description:
+                type: string
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "../ad/schemas.yaml#/components/schemas/AdTransmissionRecordUrl"
+      '400':
+        description: Invalid id supplied
+      '404':
+        description: Ad not found
+sendAdTransmissionRecordViaEmailByCampaignId:
+  post:
+    tags:
+      - ad
+      - campaign-description-ui
+    summary: send Email AdTransmissionRecord to owner by campaign id
+    operationId: sendAdTransmissionRecordViaEmailByCampaignId
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+      '400':
+        description: Invalid id supplied
+validateCampaign:
+  get:
+    tags:
+      - campaign
+      - campaign-description-ui
+    summary: validation to check copy availability
+    operationId: validateCampaign
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              $ref: "schemas.yaml#/components/schemas/CampaignValidateResponse"
+      '400':
+        description: Invalid id supplied
+conversionAnalyses:
+  get:
+    tags:
+      - campaign
+      - campaign-description-ui
+    summary: fetch campaign conversion analyses
+    operationId: fetchConversionAnalyses
+    parameters:
+      - name: campaignId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "./schemas.yaml#/components/schemas/ConversionAnalysis"
+      '400':
+        description: Invalid id supplied
+  put:
+    tags:
+      - campaign
+      - campaign-description-ui
+    summary: save campaign conversion analyses
+    operationId: saveConversionAnalyses
+    parameters:
+      - name: campaignId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: array
+            items:
+              $ref: "./schemas.yaml#/components/schemas/ConversionAnalysis"
+    responses:
+      '200':
+        description: successful operation
+        headers:
+          content-encoding:
+            description: compression
+            schema:
+              type: string
+              default: gzip
+              example: gzip
+        content:
+          application/json:
+            schema:
+              type: boolean
+      '400':
+        description: Invalid id supplied

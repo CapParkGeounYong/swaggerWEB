@@ -1,0 +1,237 @@
+components:
+  schemas:
+    TargetingSummary:
+      type: object
+      properties:
+        regionInclusions:
+          type: array
+          items:
+            $ref: "#/components/schemas/TargetTag"
+        segmentInclusionGroups:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: "#/components/schemas/TargetTag"
+        segmentExclusionGroups:
+          type: array
+          items:
+            type: array
+            items:
+              $ref: "#/components/schemas/TargetTag"
+        timeSlotInclusions:
+          type: array
+          items:
+            type: integer
+    TargetTag:
+      type: object
+      properties:
+        targetCategoryId:
+          type: integer
+          format: int64
+        name:
+          type: string
+        namePath:
+          type: string
+    TargetCategoryModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        parentId:
+          type: integer
+          format: int64
+          example: 1
+        targetCategoryHolderId:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: '역삼1동'
+          nullable: false
+          maxLength: 255
+        vendorCode:
+          type: string
+          example: 'C001'
+          nullable: true
+          maxLength: 50
+        attributes:
+          type: string
+          example: '{ "postalCode": "12345" }'
+          nullable: true
+          maxLength: 21845
+    TargetCategoryView:
+      allOf:
+        - $ref: '#/components/schemas/TargetCategoryModel'
+        - type: object
+          properties:
+            idPath:
+              type: string
+              example: '|1|2|3|4|'
+              nullable: true
+              maxLength: 21845
+            namePath:
+              type: string
+              example: '|지역|서울특별시|강남구|역삼1동|'
+              nullable: true
+              maxLength: 21845
+            depth:
+              type: integer
+              format: int32
+              example: 1
+    TargetingModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: true
+        regions:
+          type: array
+          items:
+            $ref: "#/components/schemas/TargetGroupModel"
+        segments:
+          type: array
+          items:
+            $ref: "#/components/schemas/TargetGroupModel"
+        timeSlots:
+          type: array
+          items:
+            $ref: "#/components/schemas/TargetGroupModel"
+    TargetGroupModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: true
+          description: internal use only.
+        name:
+          type: string
+        inclusive:
+          type: boolean
+        targets:
+          type: array
+          description: "target category id array"
+          items:
+            type: integer
+            format: int64
+    TargetingView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        regions:
+          type: array
+          items:
+            $ref: "#/components/schemas/TargetGroupView"
+        segments:
+          type: array
+          items:
+            $ref: "#/components/schemas/TargetGroupView"
+        timeSlots:
+          type: array
+          items:
+            $ref: "#/components/schemas/TargetGroupView"
+    TargetGroupView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          $ref: '#/components/schemas/TargetGroupName'
+        inclusive:
+          type: boolean
+        targets:
+          type: array
+          items:
+            $ref: "#/components/schemas/TargetView"
+    TargetView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        targetCategoryId:
+          type: integer
+          format: int64
+          nullable: false
+        displayName:
+          type: string
+          nullable: false
+          default: ''
+        fullPathName:
+          type: string
+          nullable: false
+          default: ''
+    TargetGroupName:
+      type: string
+      enum:
+        - REGION
+        - SEGMENT
+        - TIME_SLOT
+        - ZIP_CODE
+    TargetCategoryMigrationMap:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        name:
+          type: string
+          nullable: false
+          default: '삼성동'
+        namePath:
+          type: string
+          nullable: false
+        beforeId:
+          type: integer
+          format: int64
+          nullable: false
+        afterId:
+          type: integer
+          format: int64
+          nullable: false
+    HasChildIds:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        hasChild:
+          type: boolean
+          nullable: false
+          default: true
+    ConstantTargetingModel:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        name:
+          type: string
+          nullable: false
+          default: ''
+        modifiable:
+          type: boolean
+          nullable: false
+          default: false
+        defaultTargeting:
+          $ref: "#/components/schemas/TargetingView"
+        bannedTimeSlotTargetCategories: # (전체 TIME_SLOT 카테고리 - TIME_SLOT 카테고리)
+          type: array
+          items:
+            $ref: "../common/schemas.yaml#/components/schemas/CommonIdDisplayName"

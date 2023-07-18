@@ -1,0 +1,514 @@
+components:
+  schemas:
+    CreativeCreation:
+      type: object
+      properties:
+        name:
+          type: string
+          default: ""
+          maxLength: 255
+        description:
+          type: string
+          example: description
+          default: ""
+        ownerParticipantId:
+          type: integer
+          format: int64
+        storedS3FileId:
+          type: integer
+          format: int64
+        creativeType:
+          type: string
+          default: "VIDEO"
+          $ref: '#/components/schemas/CreativeType'
+        deliberationNumber:
+          type: string
+        originResourceId:
+          type: integer
+          format: int64
+        integrationId:
+          type: string
+        sourceId:
+          type: integer
+          format: int64
+        createdBy:
+          type: integer
+          format: int64
+    CreativeForList:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          default: 0
+          example: 1
+          nullable: false
+        createdAt:
+          type: string
+          format: date-time
+          nullable: false
+        name:
+          type: string
+          default: ""
+          maxLength: 255
+        type:
+          type: string
+          default: VIDEO
+          example: VIDEO
+          nullable: false
+          $ref: '#/components/schemas/CreativeType'
+        status:
+          type: string
+          nullable: false
+          default: AWAITING
+          $ref: "#/components/schemas/CreativeAssetStatus"
+        standard:
+          type: string
+        source:
+          type: string
+        participantName:
+          type: string
+          default: ""
+        createdBy:
+          type: string
+    CreativeCreatedBy:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        account:
+          type: string
+          example: admin
+        name:
+          type: string
+          example: admin
+    CreativeDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          default: 0
+          example: 1
+          nullable: false
+        name:
+          type: string
+          default: ""
+          maxLength: 255
+        createdAt:
+          type: string
+          format: date-time
+          nullable: false
+        type:
+          type: string
+          default: VIDEO
+          example: VIDEO
+          nullable: false
+          $ref: '#/components/schemas/CreativeType'
+        size:
+          type: string
+          description: 동영상 - attributes.video.playTime, 이미지 - attributes.image.resolutionWidth + "x" + attributes.image.resolutionHeight, 텍스트 - null
+        description:
+          type: string
+          default: ""
+          maxLength: 1000
+        participantId:
+          type: integer
+          format: int64
+        participantName:
+          type: string
+          default: ""
+        source:
+          type: string
+        storedUrl:
+          type: string
+        correctedUrl:
+          type: string
+        previewUrl:
+          type: string
+        createdBy:
+          type: string
+        attributes:
+          type: string
+        #        attributes:
+        #          $ref: '#/components/schemas/CreativeAttributes'
+        previewStatus:
+          type: string
+          nullable: false
+          default: AWAITING
+          $ref: "#/components/schemas/CreativeAssetStatus"
+        creativeAttachmentDetails:
+          type: array
+          items:
+            $ref: "#/components/schemas/CreativeAttachmentDetail"
+        reviewPlacements:
+          type: object
+          additionalProperties:
+            type: array
+            nullable: false
+            items:
+              $ref: "../creativePlacement/schemas.yaml#/components/schemas/CreativePlacementView"
+        #              type: integer
+        #              format: int64
+        correctable:
+          type: boolean
+          default: false
+    CreativeAssetDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          default: 0
+          example: 1
+          nullable: false
+        status:
+          type: string
+          nullable: false
+          default: AWAITING
+          $ref: "#/components/schemas/CreativeAssetStatus"
+        assetType:
+          type: string
+          nullable: false
+          default: PREVIEW
+          $ref: "#/components/schemas/EncodingAssetType"
+        fileSize:
+          type: integer
+          format: int64
+          default: 0
+        encodingId:
+          type: string
+    CreativeAttachmentDetail:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          default: 0
+          example: 1
+          nullable: false
+        fileName:
+          type: string
+        fileUrl:
+          type: string
+        fileSize:
+          type: integer
+          format: int64
+    CreativeParticipantInfo:
+      type: object
+      properties:
+        creativeId:
+          type: integer
+          format: int64
+          default: 0
+          nullable: false
+        participantId:
+          type: integer
+          format: int64
+          default: 0
+          nullable: false
+    CreativeAttributes:
+      type: object
+      properties:
+        video:
+          $ref: "#/components/schemas/CreativeVideoAttribute"
+        image:
+          $ref: "#/components/schemas/CreativeImageAttribute"
+        text:
+          $ref: "#/components/schemas/CreativeTextAttribute"
+        programmatic:
+          $ref: "#/components/schemas/ProgrammaticAttribute"
+        callbacks:
+          $ref: "#/components/schemas/Callbacks"
+        callbackUrls:
+          type: array
+          items:
+            type: string
+        encodingOnly:
+          type: boolean
+          default: false
+        targetPlatforms:
+          type: array
+          items:
+            type: integer
+            format: int64
+    Callbacks:
+      type: object
+      properties:
+        onEncodingCompleted:
+          $ref: '../common/schemas.yaml#/components/schemas/HttpDescriptionModel'
+    CreativeVideoAttribute:
+      type: object
+      properties:
+        playTime:
+          type: integer
+          format: int32
+          example: 15000
+          default: 15000
+          description: play time in milli second
+        deliberationCheck:
+          type: boolean
+          default: false
+          description: deliberation number check or not by administrator
+        deliberationNumber:
+          type: string
+          description: deliberation number of creative
+        deliberationCheckedAt:
+          type: string
+        deliberationCheckedBy:
+          type: string
+          description: 'member info : ex) sh.kim (김서하)'
+        deliberationFileUrl:
+          type: string
+    CreativeImageAttribute:
+      type: object
+      properties:
+        resolution:
+          type: string
+          example: 1920x1080
+          description: resolution of image creative
+        deliberationCheck:
+          type: boolean
+          default: false
+          description: deliberation number check or not by administrator
+        deliberationNumber:
+          type: string
+          description: deliberation number of creative
+        deliberationCheckedAt:
+          type: string
+        deliberationCheckedBy:
+          type: string
+          description: 'member info : ex) sh.kim (김서하)'
+    CreativeTextAttribute:
+      type: object
+      properties:
+        deliberationCheck:
+          type: boolean
+          default: false
+          description: deliberation number check or not by administrator
+        deliberationNumber:
+          type: string
+          description: deliberation number of creative
+        deliberationCheckedAt:
+          type: string
+        deliberationCheckedBy:
+          type: string
+          description: 'member info : ex) sh.kim (김서하)'
+    ProgrammaticAttribute:
+      type: object
+      properties:
+        originCrc:
+          type: integer
+          format: int64
+        precachingRequired:
+          type: boolean
+          default: false
+        callbackUrl:
+          type: string
+        lastResponseTime:
+          type: integer
+          format: int64
+        totalResponseCount:
+          type: integer
+        lastWeekResponseCount:
+          type: integer
+    CreativeType:
+      type: string
+      default: 'VIDEO'
+      enum:
+        - VIDEO
+        - IMAGE
+        - TEXT
+    Category:
+      type: string
+      default: 'REGULAR'
+      enum:
+        - REGULAR
+        - PROGRAMMATIC
+    EncodingAssetType:
+      type: string
+      enum:
+        - PREVIEW
+        - REGULAR
+    CreativeAssetStatus:
+      type: string
+      nullable: false
+      enum:
+        - AWAITING
+        - FAILED
+        - SUCCEEDED
+    CreativeIdName:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        participantId:
+          type: integer
+          format: int64
+    StatusResult:
+      type: object
+      properties:
+        success:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        failed:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        awaiting:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        total:
+          type: integer
+          format: int32
+          nullable: false
+          default: 0
+        status:
+          type: boolean
+          nullable: false
+          default: false
+    EncodingDistributingStatus:
+      type: object
+      properties:
+        placementId:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        available:
+          type: boolean
+          nullable: false
+          default: false
+        adVersionId:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        assetProfileId:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        type:
+          $ref: '../creative/schemas.yaml#/components/schemas/CreativeType'
+        finishEncoding:
+          type: boolean
+          nullable: false
+          default: false
+        finishDistributing:
+          type: boolean
+          nullable: false
+          default: false
+    CreativeIdPlacementId:
+      type: object
+      properties:
+        creativeId:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+        placementId:
+          type: integer
+          format: int64
+          nullable: false
+          default: 0
+    CreativeReadyStatus:
+      type: object
+      properties:
+        creativeId:
+          type: integer
+          format: int64
+          nullable: false
+        assetStatuses:
+          type: array
+          items:
+            type: object
+            properties:
+              assetProfile:
+    CreativeNotificationInfo:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          nullable: false
+        campaignId:
+          type: integer
+          format: int64
+          nullable: false
+        campaignName:
+          type: string
+          format: string
+          nullable: false
+        adId:
+          type: integer
+          format: int64
+          nullable: false
+        adName:
+          type: string
+          format: string
+          nullable: false
+        creativeId:
+          type: integer
+          format: int64
+          nullable: false
+        creativeName:
+          type: string
+          format: string
+          nullable: false
+        reviewOwnerAccount:
+          type: string
+          format: string
+          nullable: false
+        reviewOwnerName:
+          type: string
+          format: string
+          nullable: false
+        reviewOwnerEmail:
+          type: string
+          format: string
+          nullable: false
+        receiverEmailOnReview:
+          type: boolean
+        placementInfo:
+          type: array
+          items:
+            $ref: '#/components/schemas/CreativeNotificationPlacementInfo'
+    CreativeNotificationPlacementInfo:
+      type: object
+      properties:
+        publisherName:
+          type: string
+          format: string
+          nullable: false
+        placementName:
+          type: string
+          format: string
+          nullable: false
+        contentName:
+          type: string
+          format: string
+          nullable: false
+    DeviceCreativeInfo:
+      type: object
+      properties:
+        creativeId:
+          type: integer
+          format: int64
+          nullable: false
+        creativeName:
+          type: string
+          nullable: false
+        playTime:
+          type: integer
+          format: int32

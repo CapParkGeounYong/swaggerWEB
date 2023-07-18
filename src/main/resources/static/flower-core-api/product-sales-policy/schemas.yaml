@@ -1,0 +1,277 @@
+components:
+  schemas:
+    ProductSalesPolicyModel:
+      type: object
+      properties:
+        attributes:
+          nullable: true
+          $ref: "#/components/schemas/ProductSalesPolicyAttributes"
+    ProductSalesPolicyView:
+      type: object
+      properties:
+        name:
+          type: string
+          enum:
+            - CAMPAIGN_BUDGET_PROMOTION
+            - LIMITED_PERIOD_PROMOTION
+            - INDUSTRY_PROMOTION
+            - REGIONAL_TARGETING_PREMIUM
+            - HOT_REGION_PREMIUM
+            - AUDIENCE_TARGETING_PREMIUM
+            - TIME_SLOT_TARGETING_PREMIUM
+            - CLICK_URL_PREMIUM
+            - FREQUENCY_CAP_PREMIUM
+        policyType:
+          type: string
+          enum:
+            - PROMOTION
+            - PREMIUM
+        evaluator:
+          type: string
+        attributes:
+          nullable: true
+          $ref: "#/components/schemas/ProductSalesPolicyAttributes"
+    ProductSalesPolicyEvaluationView:
+      allOf:
+      - $ref: "#/components/schemas/AdProductSalesPoliciesView"
+      - type: object
+        properties:
+          adId:
+            type: integer
+            format: int64
+            description: ad Id
+            example: 1
+            nullable: false
+          totalPremium:
+            type: number
+            format: double
+          totalPromotion:
+            type: number
+            format: double
+    ProductSalesPolicyNames:
+      type: string
+      enum:
+        - CAMPAIGN_BUDGET_PROMOTION
+        - LIMITED_PERIOD_PROMOTION
+        - INDUSTRY_PROMOTION
+        - REGIONAL_TARGETING_PREMIUM
+        - HOT_REGION_PREMIUM
+        - AUDIENCE_TARGETING_PREMIUM
+        - TIME_SLOT_TARGETING_PREMIUM
+        - CLICK_URL_PREMIUM
+        - FREQUENCY_CAP_PREMIUM
+    ProductSalesPolicyType:
+      type: string
+      enum:
+        - PROMOTION
+        - PREMIUM
+    AdProductSalesPoliciesView:
+      type: object
+      properties:
+        adId:
+          type: integer
+          format: int64
+          description: ad Id
+          example: 1
+          nullable: false
+        premiums:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdProductSalesPolicyView"
+        promotions:
+          type: array
+          items:
+            $ref: "#/components/schemas/AdProductSalesPolicyView"
+    AdProductSalesPolicyView:
+      type: object
+      properties:
+        adId:
+          type: integer
+          format: int64
+          description: ad Id
+          example: 1
+          nullable: false
+        ratio:
+          type: number
+          format: double
+        productSalesPolicy:
+          $ref: "#/components/schemas/ProductSalesPolicyView"
+    ProductSalesPolicyAttributes:
+      type: object
+      properties:
+        budgetAttributes:
+          $ref: "#/components/schemas/BudgetAttributes"
+        periodicAttributes:
+          $ref: "#/components/schemas/PeriodicAttributes"
+        industryAttributes:
+          $ref: "#/components/schemas/IndustryAttributes"
+        regionalTargetingAttributes:
+          $ref: "#/components/schemas/RegionalTargetingAttributes"
+        hotRegionAttributes:
+          $ref: "#/components/schemas/HotRegionAttributes"
+        audienceTargetingAttributes:
+          $ref: "#/components/schemas/AudienceTargetingAttributes"
+        timeSlotTargetingAttributes:
+          $ref: "#/components/schemas/TimeSlotTargetingAttributes"
+        clickUrlAttributes:
+          $ref: "#/components/schemas/ClickUrlAttributes"
+        frequencyCapAttributes:
+          $ref: "#/components/schemas/FrequencyCapAttributes"
+    BudgetAttributes:
+      type: object
+      properties:
+        conditions:
+          type: array
+          items:
+            $ref: "#/components/schemas/BudgetCriterion"
+    PeriodicAttributes:
+      type: object
+      properties:
+        conditions:
+          type: array
+          items:
+            $ref: "#/components/schemas/PeriodicCriterion"
+    IndustryAttributes:
+      type: object
+      properties:
+        conditions:
+          type: array
+          items:
+            $ref: "#/components/schemas/IndustryCriterion"
+    RegionalTargetingAttributes:
+      type: object
+      properties:
+        depthConditions:
+          type: object
+          properties:
+            depth1:
+              type: number
+              format: double
+            depth2:
+              type: number
+              format: double
+            depth3:
+              type: number
+              format: double
+        zipCodePremium:
+          type: number
+          format: double
+    HotRegionAttributes:
+      type: object
+      properties:
+        conditions:
+          $ref: '#/components/schemas/HotRegionCriteria'
+    AudienceTargetingAttributes:
+      type: object
+      properties:
+        depthConditions:
+          type: object
+          properties:
+            depth1:
+              type: number
+              format: double
+            depth2:
+              type: number
+              format: double
+            depth3:
+              type: number
+              format: double
+            depth4:
+              type: number
+              format: double
+    TimeSlotTargetingAttributes:
+      type: object
+      properties:
+        premium:
+          type: number
+          format: double
+          example: 10
+    ClickUrlAttributes:
+      type: object
+      properties:
+        premium:
+          type: number
+          format: double
+          example: 10
+    FrequencyCapAttributes:
+      type: object
+      properties:
+        premium:
+          type: number
+          format: double
+          example: 10
+    BudgetCriterion:
+      type: object
+      properties:
+        name:
+          type: string
+          example: budget over 10,000,000
+        from:
+          type: integer
+          format: int64
+          nullable: false
+          example: 10000000
+        to:
+          type: integer
+          format: int64
+          nullable: false
+          example: 50000000
+        then:
+          type: number
+          format: double
+          example: 10
+    PeriodicCriterion:
+      type: object
+      properties:
+        name:
+          type: string
+          default: new launch pormotion
+        from:
+          type: string
+          format: date
+        to:
+          type: string
+          format: date
+        then:
+          type: number
+          format: double
+    IndustryCriterion:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: false
+          example: regulation bonus 1
+        industries:
+          type: array
+          items:
+            $ref: "../common/schemas.yaml#/components/schemas/CommonIdDisplayName"
+        minimumCampaignBudget:
+          type: integer
+          format: int64
+          nullable: false
+          example: 5000000
+        then:
+          type: number
+          format: double
+          nullable: false
+          example: 20
+    HotRegionCriteria:
+      type: object
+      properties:
+          tier1:
+            $ref: "#/components/schemas/HotRegionCriterion"
+          tier2:
+            $ref: "#/components/schemas/HotRegionCriterion"
+          tier3:
+            $ref: "#/components/schemas/HotRegionCriterion"
+    HotRegionCriterion:
+      type: object
+      properties:
+        regions:
+          type: array
+          items:
+            $ref: "../common/schemas.yaml#/components/schemas/CommonIdDisplayName"
+        then:
+          type: number
+          format: double

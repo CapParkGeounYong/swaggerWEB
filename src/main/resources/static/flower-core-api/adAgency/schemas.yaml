@@ -1,0 +1,45 @@
+components:
+  schemas:
+    AdAgencyWithMember:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: APM
+        participantId:
+          type: integer
+          format: int64
+          example: 1
+        member:
+          $ref: "#/components/schemas/MemberByAdAgency"
+    MemberByAdAgency:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: jungwoo han
+        account:
+          type: string
+          example: minestar
+    AdAgencyTag:
+      type: object
+      properties:
+        adAgencyId:
+          type: integer
+          format: int64
+          example: 1
+        name:
+          type: string
+          example: APM
+        participantId:
+          type: integer
+          format: int64
+          example: 1
